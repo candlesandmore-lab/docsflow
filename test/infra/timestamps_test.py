@@ -9,7 +9,7 @@ from python.infra import timeStampMeta
 
 class TimestampTests(unittest.TestCase):
 
-    def test_getUTC(self):
+    def test_getUTC(self) -> None:
         utcTimestamp : datetime = timeStampMeta.utcDateTime()
         print(utcTimestamp)
 

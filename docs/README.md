@@ -2,7 +2,7 @@
 
 ## Installation
 
-https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-windows-unattended/#download-the-installer
+<https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-windows-unattended/#download-the-installer>
 
 ## Start
 

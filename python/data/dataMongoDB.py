@@ -5,7 +5,7 @@ import pymongo.errors
 # dbLocation=some-host:port
 def initDB(host="localhost", port=27017, replicaSet=None):
 
-    if replicaSet == None:
+    if replicaSet is None:
         # e.g. mongodb://localhost:27017/"
         mongoDBClient = pymongo.MongoClient("mongodb://{}:{}/".format(host, port), 
             serverSelectionTimeoutMS = 2000, 
@@ -27,7 +27,7 @@ def initDB(host="localhost", port=27017, replicaSet=None):
 
 def getDB(mongoDBClient, dbName):
 
-    if mongoDBClient == None:
+    if mongoDBClient is None:
         print("*ERR* : mongo DB client not initialized.")
     else:
         # create clean starting point
@@ -40,13 +40,13 @@ def getDB(mongoDBClient, dbName):
     return mongoDB
 
 def createCollection(mongoDB, collectionName, schemaTimeseriesMeta=None):
-    if mongoDB == None:
+    if mongoDB is None:
         print("*ERR* : mongo DB not initialized.")
     else:
         # create clean starting point
         try:
             mongoDBCollection = getCollection(mongoDB, collectionName)
-            if mongoDBCollection == None:
+            if mongoDBCollection is None:
                 if not schemaTimeseriesMeta:
                     mongoDBCollection = mongoDB.create_collection(collectionName)
                 else:
@@ -62,7 +62,7 @@ def createCollection(mongoDB, collectionName, schemaTimeseriesMeta=None):
 
 def getCollection(mongoDB, collectionName, schemaMeta=None):
 
-    if mongoDB == None:
+    if mongoDB is None:
         print("*ERR* : mongo DB not initialized.")
     else:
         # create clean starting point
@@ -76,7 +76,7 @@ def getCollection(mongoDB, collectionName, schemaMeta=None):
     return mongoDBCollection
 
 def getDoc(mongoDBCollection, query):
-    if mongoDBCollection == None:
+    if mongoDBCollection is None:
         print("*ERR* : getDocument() : mongo DB collection not initialized.")
     else:
         # create clean starting point
@@ -84,14 +84,17 @@ def getDoc(mongoDBCollection, query):
             mongoDBDoc = mongoDBCollection.find(query)
             mongoDBDocList = list(mongoDBDoc)
         except BaseException as Error:
-            print ("Could not query document, query: {}".format(Error, query))
+            print ("Could not query document, query: {} - [{}]".format(
+                query,
+                Error
+            ))
             mongoDBDoc = None
             mongoDBDocList = None
 
     return mongoDBDoc, mongoDBDocList
 
 def insertDoc(mongoDBCollection, docDict):
-    if mongoDBCollection == None:
+    if mongoDBCollection is None:
         print("*ERR* : getDocument() : mongo DB collection not initialized.")
     else:
         # create clean starting point
@@ -99,13 +102,16 @@ def insertDoc(mongoDBCollection, docDict):
             docRecordId = mongoDBCollection.insert_one(docDict)
 
         except BaseException as Error:
-            print ("Could not insert document: {}".format(Error, docDict))
+            print ("Could not insert document: {} - [{}]".format(
+                docDict,
+                Error
+            ))
             docRecordId = None
 
     return docRecordId
 
 def insertManyDocs(mongoDBCollection, docDictList):
-    if mongoDBCollection == None:
+    if mongoDBCollection is None:
         print("*ERR* : getDocument() : mongo DB collection not initialized.")
     else:
         # create clean starting point
@@ -113,7 +119,10 @@ def insertManyDocs(mongoDBCollection, docDictList):
             docRecordId = mongoDBCollection.insert_many(docDictList)
 
         except BaseException as Error:
-            print ("Could not insert document list: {}".format(Error, docDictList))
+            print ("Could not insert document list: {} - [{}]".format(
+                docDictList,
+                Error
+            ))
             docRecordId = None
 
     return docRecordId

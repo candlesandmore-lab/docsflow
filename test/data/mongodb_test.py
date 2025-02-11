@@ -1,9 +1,7 @@
 import unittest   # The test framework
 import pymongo
-from datetime import datetime
 
 import python.data.dataMongoDB as dataMongoDB
-from python.infra import timeStampMeta
 
 pv_mongoDBHost = "localhost"
 pv_mongoDBPort = 27017
@@ -73,9 +71,9 @@ class Test_MongoDBInfra(unittest.TestCase):
         # create starting point
         collection.drop()
                 
-        id1 = collection.insert_one(pv_Node1)
-        id2 = collection.insert_one(pv_Node2)
-        id3 = collection.insert_one(pv_Node3)
+        _ = collection.insert_one(pv_Node1)
+        _ = collection.insert_one(pv_Node2)
+        _ = collection.insert_one(pv_Node3)
 
         queryDoc, queryDocList = dataMongoDB.getDoc(collection, pv_FailQuery)
         self.assertEqual(len(queryDocList), 0)
