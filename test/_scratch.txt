@@ -1,0 +1,1 @@
+'{"nodeType": 0, "uuid": "9f8bf5d9-6015-49ba-854d-fbc89f600a41", "childs": [{"nodeType": 2, "uuid": "114bb5c2-8bbb-47e0-817c-cb82dec994b3", "childs": [], "updates": [], "testIntList": [1, 43, 5]}], "updates": [{"when": "2025-02-12T16:38:05.332842+00:00", "who": {"name": "frankar", "role": "PV"}, "description": "Added child ...", "kind": 1}], "testIntList": [1, 43, 5]}'

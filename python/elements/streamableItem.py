@@ -1,7 +1,7 @@
 
 
 import json
-from typing import List, Optional
+from typing import Any, Generator, List, Optional
 
 class StreamableItem():
     def __init__(self):
@@ -11,7 +11,7 @@ class StreamableItem():
     def __flat_iter__(self) -> bool:
         return False
 
-    def __iter__(self):
+    def __iter__(self) -> Generator[tuple[str, Any] | Any | tuple[str, list] | tuple[str, dict], Any, None]:
 
         for key in self.__dict__:
             # streaming requires some special handling for some objects
@@ -62,10 +62,10 @@ class StreamableItem():
         __dict = dict(self)
         return json.dumps(__dict, indent=indent)
     
-    def fromJson(  # noqa: F811
+    def fromJson(
             self,
             jsonString : str
-        ):
+        ) -> None :
         pass
     
 

@@ -31,11 +31,11 @@ class UpdateItem(StreamableItem):
         self.description = description
         self.kind = kind
 
-    # streamed from JSON
-    def fromJson(  # noqa: F811
+    # restore from JSON into BL format
+    def fromJson(
             self,
             jsonString : str
-        ):
+        ) -> None :
         _from_json_dict = json.loads(jsonString)
         
         self.when = DatetimeItem(utcDateTimeFromIsoString(_from_json_dict['when']))
