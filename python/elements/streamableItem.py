@@ -1,7 +1,7 @@
 
 
 import json
-from typing import Optional
+from typing import List, Optional
 
 class StreamableItem():
     def __init__(self):
@@ -14,8 +14,25 @@ class StreamableItem():
     def __iter__(self):
 
         for key in self.__dict__:
-            
-            if isinstance(self.__getattribute__(key), StreamableItem):
+            if isinstance(self.__getattribute__(key), List):
+                streamedList = []
+                for listEntry in self.__getattribute__(key):
+                    if isinstance(listEntry, StreamableItem):
+                        #print("Key = {} : Flat = {}".format(key, self.__getattribute__(key).__flat_iter__()))
+                        if listEntry.__flat_iter__():
+                            # do not build a hierarchy, just stream the objects fields
+                            yield from listEntry
+                        else:
+                            fields = listEntry.__iter__()
+                            dict = {}
+                            for f in fields:
+                                dict[f[0]] = f[1]
+                            streamedList.append(dict)
+                            #self.__getattribute__(key).__iter__()
+
+                yield key, streamedList
+                    
+            elif isinstance(self.__getattribute__(key), StreamableItem):
                 print("Key = {} : Flat = {}".format(key, self.__getattribute__(key).__flat_iter__()))
                 if self.__getattribute__(key).__flat_iter__():
                     # do not build a hierarchy, just stream the objects fields

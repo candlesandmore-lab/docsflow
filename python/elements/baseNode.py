@@ -1,5 +1,7 @@
 from typing import List, Optional
+import uuid
 from python.elements.datetimeItem import DatetimeItem
+from python.elements.descriptionItem import DescriptionItem
 from python.elements.streamableItem import StreamableItem
 from python.elements.updateItem import UpdateItem, UpdateType
 from python.elements.userItem import UserItem
@@ -7,26 +9,35 @@ from python.infra.timeStampMeta import utcDateTime
 
 
 class BaseNode(StreamableItem):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
-        self.childs = List[BaseNode] = list()
-        self.updates = List[UpdateItem] = list()
+        self.uuid : int = uuid.uuid4()  # later DB IDs
+        self.childs : List[BaseNode] = list()
+        self.updates : List[UpdateItem] = list()
+        self.lastUpdate : UpdateItem = None
 
     def addChild(
             self, 
-            child : BaseNode, 
+            child, 
             user : UserItem, 
             when : Optional[DatetimeItem] = None) -> None:
+        
         if when is None:
             when = DatetimeItem(utcDateTime())
 
-        self.updates.append(
-            UpdateItem(
+        update = UpdateItem(
                 kind=UpdateType.UPDATE,
-                when=when,
+                when = when,
                 who=user,
-                description="Add child node"
+                description=DescriptionItem("Added child ...")
             )
+        
+        self.updates.append(
+            update    
         )
-        pass
+
+        self.childs.append(child)
+
+        self.lastUpdate = update 
+        
 

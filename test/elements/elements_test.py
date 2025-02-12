@@ -49,13 +49,15 @@ class TestElements(unittest.TestCase):
             updateItem.toJson()
         ))
 
-    def test_streamUnstreamSingle(self):
-        updateItem = UpdateItem(
+    def getStreamableItem(self) -> StreamableItem:
+        return UpdateItem(
             kind=UpdateType.CREATE,
             when=DatetimeItem(utcDateTime()),
             who=UserItem('frankar', 'PV'),
             description=DescriptionItem("PV test for a single update element")
         )
+    def test_streamUnstreamSingle(self):
+        updateItem = self.getStreamableItem()
         self.assertNotEqual(updateItem, None)
         initialJsonString = updateItem.toJson()
         print("Item streamed : ")
