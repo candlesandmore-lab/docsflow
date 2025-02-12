@@ -7,6 +7,10 @@ class DatetimeItem(StreamableItem):
     def __init__(self, when : datetime):
         self.when = when
 
+    # stream as datetime key : value
+    def __flat_iter__(self) -> bool:
+        return True
+    
     def __iter__(self): 
         # This allows iteration over the keys of the dictionary 
         yield 'when', self.when.isoformat()

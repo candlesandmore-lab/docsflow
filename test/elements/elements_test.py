@@ -5,8 +5,10 @@ import json
 import unittest
 
 from python.elements.datetimeItem import DatetimeItem
+from python.elements.descriptionItem import DescriptionItem
 from python.elements.streamableItem import StreamableItem
 from python.elements.updateItem import UpdateItem, UpdateType
+from python.elements.userItem import UserItem
 from python.infra.timeStampMeta import utcDateTime
 
 class pvStream(StreamableItem):
@@ -15,7 +17,10 @@ class pvStream(StreamableItem):
         self.when = when
         self.someText : str = "PV test"
         self.someNumber : int = 14041978
-
+        self.foo = {
+            'n' : 'name',
+            'k' : 1
+        }
     
 class TestElements(unittest.TestCase):
 
@@ -35,8 +40,8 @@ class TestElements(unittest.TestCase):
         updateItem = UpdateItem(
             kind=UpdateType.CREATE,
             when=DatetimeItem(utcDateTime()),
-            who='frankar',
-            description="PV test for a single update element"
+            who=UserItem('frankar', 'PV'),
+            description=DescriptionItem("PV test for a single update element")
         )
         self.assertNotEqual(updateItem, None)
         print("Item streamed : ")
@@ -48,8 +53,8 @@ class TestElements(unittest.TestCase):
         updateItem = UpdateItem(
             kind=UpdateType.CREATE,
             when=DatetimeItem(utcDateTime()),
-            who='frankar',
-            description="PV test for a stream/update/unstream"
+            who=UserItem('frankar', 'PV'),
+            description=DescriptionItem("PV test for a single update element")
         )
         self.assertNotEqual(updateItem, None)
         initialJsonString = updateItem.toJson()
@@ -70,7 +75,7 @@ class TestElements(unittest.TestCase):
         self.assertEqual(initialJsonString, unstreamedItemJsonString)
         self.assertDictEqual(json.loads(initialJsonString), json.loads(unstreamedItemJsonString))
 
-        unstreamedItem.who = 'PV-overwrite-who'
+        unstreamedItem.who = UserItem('jim', 'NOPV')
         unstreamedItemJsonString = unstreamedItem.toJson()
         print("Unstreamed #updated: ")
         print("{}".format(

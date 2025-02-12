@@ -3,16 +3,30 @@
 import json
 from typing import Optional
 
-
 class StreamableItem():
     def __init__(self):
         pass
 
+    # default: stream objects in hierarchy
+    def __flat_iter__(self) -> bool:
+        return False
+
     def __iter__(self):
 
         for key in self.__dict__:
+            
             if isinstance(self.__getattribute__(key), StreamableItem):
-                yield from self.__getattribute__(key)
+                print("Key = {} : Flat = {}".format(key, self.__getattribute__(key).__flat_iter__()))
+                if self.__getattribute__(key).__flat_iter__():
+                    # do not build a hierarchy, just stream the objects fields
+                    yield from self.__getattribute__(key)
+                else:
+                    fields = self.__getattribute__(key).__iter__()
+                    dict = {}
+                    for f in fields:
+                        dict[f[0]] = f[1]
+                    yield key, dict
+                    #self.__getattribute__(key).__iter__()
             else:
                 yield key, getattr(self, key)
     

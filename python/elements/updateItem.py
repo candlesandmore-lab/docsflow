@@ -30,6 +30,10 @@ class UpdateItem(StreamableItem):
         self.who = who
         self.description = description
         self.kind = kind
+        self.tdict = {
+            'a' : "foo",
+            'b' : 1
+        }
 
     # streamed from JSON
     def fromJson(  # noqa: F811
