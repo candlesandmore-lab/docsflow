@@ -43,7 +43,7 @@ class StreamableItem():
                     
             elif isinstance(self.__getattribute__(key), StreamableItem):
                 streamingDone = True
-                print("Key = {} : Flat = {}".format(key, self.__getattribute__(key).__flat_iter__()))
+                #print("Key = {} : Flat = {}".format(key, self.__getattribute__(key).__flat_iter__()))
                 if self.__getattribute__(key).__flat_iter__():
                     # do not build a hierarchy, just stream the objects fields
                     yield from self.__getattribute__(key)

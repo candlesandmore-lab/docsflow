@@ -56,14 +56,30 @@ pv_FailQuery = { "Name": "pv_NodeXYZ" }
 pv_PassQueryMultiple = { "type": "context" }
 pv_PassQuerySingle = { "type": "context" , 'timestamp' : { "$gt": 1202510300 }}
 
+class PV_MongoHelper():
+    def __init__(self):
+        pass
+        
+    def initPV_DB(self):
+        dbClient = dataMongoDB.initDB(pv_mongoDBHost, pv_mongoDBPort)
+
+        db = dataMongoDB.getDB(dbClient, pv_mongoDBName)
+
+        return db
+
 class Test_MongoDBInfra(unittest.TestCase):
 
-    def test_mongoDBInfra(self):
+    def initPV_DB(self):
         dbClient = dataMongoDB.initDB(pv_mongoDBHost, pv_mongoDBPort)
         self.assertNotEqual(dbClient, None)
 
         db = dataMongoDB.getDB(dbClient, pv_mongoDBName)
         self.assertNotEqual(db, None)
+
+        return db
+
+    def test_mongoDBInfra(self):
+        db = self.initPV_DB()
 
         collection = dataMongoDB.getCollection(db, pv_mongoCollectionName)
         self.assertNotEqual(collection, None)

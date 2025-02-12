@@ -61,16 +61,5 @@ class BaseNode(StreamableItem):
         self.testIntList = _from_json_dict['testIntList']
         self.childs = _from_json_dict['childs']
         self.updates = _from_json_dict['updates']
-        '''
-        for childJson in _from_json_dict['childs']:
-            # TODO: reconstruct dependent on nodeType
-            childNode = BaseNode(childJson['nodeType'])
-            childNode.fromJson(childJson)
-            self.childs.append(childNode)
 
-        for updateJson in _from_json_dict['updates']:
-            updateItem = UpdateItem()
-            updateItem.fromJson(updateJson)
-            self.updates.append(updateItem)
-        '''
 

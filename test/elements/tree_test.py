@@ -6,9 +6,10 @@ import unittest
 from python.elements.baseNode import BaseNode, NodeType
 from python.elements.userItem import UserItem
 
-class TestTrees(unittest.TestCase):
-
-
+class PV_TreeHelper():
+    def __init__(self):
+        pass
+    
     def getBaseNode(self, nodeType : NodeType) -> BaseNode:
         node = BaseNode(
             nodeType=nodeType
@@ -26,13 +27,19 @@ class TestTrees(unittest.TestCase):
     
         return node
         
+class TestTrees(unittest.TestCase):
+
+
+        
     def test_smallTreeStream(self):
-        node = self.getHierNode()
+        treeHelper = PV_TreeHelper()
+        node = treeHelper.getHierNode()
         
         print(dict(node))
 
     def test_smallTreeStreamUnstream(self):
-        node = self.getHierNode()
+        treeHelper = PV_TreeHelper()
+        node = treeHelper.getHierNode()
         
         #
         jsonStream = node.toJson()
