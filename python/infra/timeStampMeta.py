@@ -10,3 +10,7 @@ def utcDateTime(dateTime : Optional[datetime] = None) -> datetime :
     
 def utcTimeStamp(dateTime : Optional[datetime] = None) -> float:
     return utcDateTime(dateTime).timestamp()
+
+def utcDateTimeFromIsoString(isotime : str) -> datetime :
+    print(isotime)
+    return datetime.fromisoformat(isotime)
