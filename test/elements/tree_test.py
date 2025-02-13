@@ -45,7 +45,10 @@ class TestTrees(unittest.TestCase):
         jsonStream = node.toJson()
         print(jsonStream)
 
-        streamedNode = BaseNode()
+        streamedNode = BaseNode(
+            name="",
+            nodeType = NodeType.PROJECT
+        )
         streamedNode.fromJson(
             jsonString=jsonStream
         )
@@ -53,8 +56,6 @@ class TestTrees(unittest.TestCase):
         print(dict(streamedNode))
 
         self.assertDictEqual(dict(node), dict(streamedNode))
-    
-
 
 if __name__.__contains__("__main__"):
     unittest.main()

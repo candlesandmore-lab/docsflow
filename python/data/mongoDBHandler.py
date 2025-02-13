@@ -7,7 +7,7 @@ from pymongo import MongoClient
 from pymongo.database import Database
 from pymongo.collection import Collection
 from pymongo.cursor import Cursor
-from pymongo.results import InsertOneResult, InsertManyResult
+from pymongo.results import InsertOneResult, InsertManyResult, UpdateResult
 from bson.raw_bson import RawBSONDocument
 
 from python.infra.logging import getMainLogger
@@ -163,6 +163,36 @@ class MongoDBHandler():
             except BaseException as Error:
                 errMsg = "Could not insert document: {} - [{}]".format(
                     docDict,
+                    Error
+                )
+                print(errMsg)
+                self.logger.error(errMsg)
+                retValue = mdbhReturnValue.FAILURE
+
+        return retValue, docRecordId
+    
+    # create new if not exist, keep _id() if existing: https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.replace_one 
+    #   e.g. filter ={ "uuid": docDict['uuid'] }
+    def replaceDoc(self, mongoDBCollection : Collection, docDict : Any | RawBSONDocument, filter : dict) -> tuple[mdbhReturnValue, UpdateResult]:
+        retValue : mdbhReturnValue = mdbhReturnValue.OK
+        docRecordId : UpdateResult
+
+        if not self.isFunctional():
+            print("*ERR* : mongo DB not initialized.")
+            retValue = mdbhReturnValue.CLIENT_FAILURE
+        else:
+            # create clean starting point
+            try:
+                # create if it does not exist, upsert=True
+                docRecordId = mongoDBCollection.replace_one(
+                    filter = filter,
+                    replacement=docDict,
+                    upsert=True)
+
+            except BaseException as Error:
+                errMsg = "Could not replace document: {} with filter [{}] - [{}]".format(
+                    docDict,
+                    filter,
                     Error
                 )
                 print(errMsg)

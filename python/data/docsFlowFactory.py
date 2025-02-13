@@ -3,6 +3,7 @@
 # class that manages the translation between BL -and DB data structures
 
 from enum import Enum
+import json
 from pymongo.collection import Collection
 
 from python.data.mongoDBHandler import MongoDBHandler, mdbhReturnValue
@@ -104,6 +105,32 @@ class DocsFlowFactory():
                 retValue = dffReturnValue.FAILURE
 
         return retValue
+    
+    # update or insert (if node does not exist yet)
+    #   - search in correct collection based out BL UUID field of node
+    def updateNode(self, node : BaseNode) -> dffReturnValue:
+        retValue = dffReturnValue.OK
+        collection : Collection
+
+        # insert into correct collection, based on node type
+        retValue, collection = self.findCollection(node.nodeType)
+        if retValue != dffReturnValue.OK:
+            self.logger.error("Unable to identify DB collection to update [{}] node into.".format(node.nodeType))
+        else:
+            nodeDict = dict(node)
+            mdbhRetValue, insertResult = self.mongoDBHandler.replaceDoc(
+                mongoDBCollection=collection,
+                docDict=nodeDict,
+                filter={ "uuid": nodeDict['uuid'] }
+            )
+            if mdbhRetValue != mdbhReturnValue.OK:
+                self.logger.error("Failed to update [{}] node with uuid [{}] ".format(
+                    node.nodeType,
+                    nodeDict['uuid']
+                ))
+                retValue = dffReturnValue.FAILURE
+
+        return retValue
 
     # db.student.aggregate([{ $project: { subject: 1, _id: 0 } }])
     def getAnyNodeProperties(self, nodeType : NodeType, propertyKeys : list[str]) -> tuple[dffReturnValue, list[str]]:
@@ -116,7 +143,8 @@ class DocsFlowFactory():
             dffRetValue = dffReturnValue.FAILURE
         else:
             projectionDict = {
-                "_id": 1
+                "_id": 1,
+                "nodeType" : 1
             }
             for key in propertyKeys:
                 projectionDict[key] = 1
@@ -130,5 +158,36 @@ class DocsFlowFactory():
 
         return dffRetValue, result
 
+    # get a node based on properties queried using getAnyNodeProperties()
+    def getNode(self, listOfDocProperties : list[dict], index : int) -> tuple[dffReturnValue, BaseNode]:
+        retValue = dffReturnValue.OK
+        result : BaseNode
+        if len(listOfDocProperties) < index:
+            self.logger.error("Cannot select item #[{}] from list with lenght [{}]".format(
+                index,
+                len(listOfDocProperties)
+            ))
+            retValue = dffReturnValue.FAILURE
+        else:
+            nodeType = listOfDocProperties[index]['nodeType']
+            mdbhRetValuetValue, collection = self.findCollection(nodeType)
+            if mdbhRetValuetValue != dffReturnValue.OK:
+                self.logger.error("Unable to identify DB collection to insert [{}] node into.".format(nodeType))
+                retValue = dffReturnValue.FAILURE
+            else:
+                queryDict = { "_id": listOfDocProperties[index]['_id'] }
+                mdbhRetValue, queryDoc, queryDocList = self.mongoDBHandler.getDoc(collection, queryDict)
+                if len(queryDocList) != 1:
+                    self.logger.error("Unable to handle number of returned nodes [{}]".format(len(queryDocList)))
+                else:
+                    # drop database '_id' field since it is not streamable (and not useful in BL layer)
+                    nodeDict = queryDocList[0]
+                    _ = nodeDict.pop("_id")  # of type ObjectId
 
+                    result = BaseNode("", nodeType)
+                    result.fromJson(
+                        jsonString=json.dumps(nodeDict)
+                    )
+
+        return retValue, result
 

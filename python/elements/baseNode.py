@@ -58,9 +58,25 @@ class BaseNode(StreamableItem):
         ) -> None:
         _from_json_dict = json.loads(jsonString)
         
+        self.name = _from_json_dict['name']
         self.uuid = _from_json_dict['uuid']
+        self.nodeType = _from_json_dict['nodeType']
         self.testIntList = _from_json_dict['testIntList']
-        self.childs = _from_json_dict['childs']
-        self.updates = _from_json_dict['updates']
+        
+        # iterate over tree
+        for childDict in _from_json_dict['childs']:
+            childNode = BaseNode("", childDict['nodeType'])
+            childNode.fromJson(
+                jsonString=json.dumps(childDict)
+            )
+            self.childs.append(childNode)
+
+        # iterate over list of updates
+        for updateDict in _from_json_dict['updates']:
+            updateNode = UpdateItem()
+            updateNode.fromJson(
+                jsonString=json.dumps(updateDict)
+            )
+            self.updates.append(updateNode)
 
 

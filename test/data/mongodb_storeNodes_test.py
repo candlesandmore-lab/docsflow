@@ -5,7 +5,7 @@ import json
 import unittest
 
 from python.data import dataMongoDB
-from python.elements.baseNode import BaseNode
+from python.elements.baseNode import BaseNode, NodeType
 from test.data.mongodb_test import PV_MongoHelper
 from test.elements.tree_test import PV_TreeHelper
 
@@ -55,7 +55,10 @@ class TestStoreNodes(unittest.TestCase):
         #   - remove and remember MongoDB ID
         mongoId = projectDict.pop("_id")  # of type ObjectId
 
-        retreivedNode = BaseNode()
+        retreivedNode = BaseNode(
+            name="",
+            nodeType=NodeType.PROJECT
+        )
         retreivedNode.fromJson(
             jsonString=json.dumps(projectDict)
         )

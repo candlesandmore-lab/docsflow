@@ -1,6 +1,4 @@
 import logging
-import os
-
 
 mainLogger = None
 loggerInitialized : bool = False
