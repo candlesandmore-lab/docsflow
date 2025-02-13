@@ -5,6 +5,7 @@ import unittest
 
 from python.data.mongoDBHandler import mdbhReturnValue
 from python.data.docsFlowFactory import DocsFlowFactory, dffReturnValue
+from python.elements.baseNode import NodeType
 from test.data.mongodb_test import PV_MongoHelper
 from test.elements.tree_test import PV_TreeHelper
 
@@ -17,7 +18,7 @@ class TestFactory(unittest.TestCase):
 
         dbHelper = PV_MongoHelper()
         retValue, dbHandler = dbHelper.init_DBHandler()
-        self.assertTrue(retValue, mdbhReturnValue.OK)
+        self.assertEqual(retValue, mdbhReturnValue.OK)
 
         docFlowFactory = DocsFlowFactory(
             mongoDBHandler=dbHandler,
@@ -26,15 +27,26 @@ class TestFactory(unittest.TestCase):
 
         self.assertTrue(docFlowFactory.isFunctional())
 
+        # PV ONLY : --- COLLECTION CLEAR ---
+        retValue, collection = docFlowFactory.findCollection(node.nodeType)
+        self.assertEqual(retValue, dffReturnValue.OK)
+        collection.drop()
+        # --- END OF COLLECTION CLEAR ---
+
         retValue = docFlowFactory.insertNode(
             node=node
         )
-        self.assertTrue(retValue, dffReturnValue.OK)
+        self.assertEqual(retValue, dffReturnValue.OK)
 
         retValue = docFlowFactory.flushCaches()
-        self.assertTrue(retValue, dffReturnValue.OK)
+        self.assertEqual(retValue, dffReturnValue.OK)
 
-
+        retValue, listOfThings = docFlowFactory.getAnyNodeProperties(
+            nodeType=NodeType.PROJECT,
+            propertyKeys=['nodeType', 'uuid']
+        )
+        self.assertEqual(retValue, dffReturnValue.OK)
+        print(listOfThings)
 
 if __name__.__contains__("__main__"):
     unittest.main()

@@ -15,7 +15,6 @@ def getMainLogger():
         )
 
         mainLogger.info('Logging initialized')
-        mainLogger.info("{}".format(os.environ['PYTHONPATH']))
     
     return mainLogger
     

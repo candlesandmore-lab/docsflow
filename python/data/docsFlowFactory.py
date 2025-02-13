@@ -54,9 +54,6 @@ class DocsFlowFactory():
                     break
         return retValue
 
-
-        
-
     # TODO: split/optimize storage per node type and store only DB ObjectId() references in specific collections
     def findCollection(self, nodeType : NodeType) -> tuple[dffReturnValue, Collection]:
         retValue = dffReturnValue.OK
@@ -102,9 +99,36 @@ class DocsFlowFactory():
                 mongoDBCollection=collection,
                 docDict=nodeDict
             )
-            if mdbhReturnValue != mdbhRetValue.OK:
-                self.logger.error("Failed to insert [{}] node  ")
+            if mdbhRetValue != mdbhReturnValue.OK:
+                self.logger.error("Failed to insert [{}] node  ".format(node.nodeType))
                 retValue = dffReturnValue.FAILURE
 
         return retValue
+
+    # db.student.aggregate([{ $project: { subject: 1, _id: 0 } }])
+    def getAnyNodeProperties(self, nodeType : NodeType, propertyKeys : list[str]) -> tuple[dffReturnValue, list[str]]:
+        result = []
+        mdbhRetValuetValue, collection = self.findCollection(nodeType)
+        dffRetValue = dffReturnValue.OK
+
+        if mdbhRetValuetValue != dffReturnValue.OK:
+            self.logger.error("Unable to identify DB collection to insert [{}] node into.".format(nodeType))
+            dffRetValue = dffReturnValue.FAILURE
+        else:
+            projectionDict = {
+                "_id": 1
+            }
+            for key in propertyKeys:
+                projectionDict[key] = 1
+
+            # { "$project" : { "nodeType": 1, "uuid" : 1, "_id": 1 } }
+            pipeline = [
+                { "$project" : projectionDict }
+            ]
+            Cursor = collection.aggregate(pipeline=pipeline)
+            result = list(Cursor)
+
+        return dffRetValue, result
+
+
 
