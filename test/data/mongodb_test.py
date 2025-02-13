@@ -2,6 +2,9 @@ import unittest   # The test framework
 import pymongo
 
 import python.data.dataMongoDB as dataMongoDB
+from pymongo.database import Database
+
+from python.data.mongoDB import MongoDB, ReturnValue
 
 pv_mongoDBHost = "localhost"
 pv_mongoDBPort = 27017
@@ -69,14 +72,26 @@ class PV_MongoHelper():
 
 class Test_MongoDBInfra(unittest.TestCase):
 
-    def initPV_DB(self):
+    def initPV_DB(self, dbName : str = pv_mongoDBName):
         dbClient = dataMongoDB.initDB(pv_mongoDBHost, pv_mongoDBPort)
         self.assertNotEqual(dbClient, None)
 
-        db = dataMongoDB.getDB(dbClient, pv_mongoDBName)
+        db = dataMongoDB.getDB(dbClient, dbName)
         self.assertNotEqual(db, None)
 
         return db
+
+    def init_DBFactory(self, dbName : str = pv_mongoDBName) -> tuple[MongoDB, Database]:
+        dbFactory = MongoDB(
+            host="localhost",
+            port=27017,
+            replicaSet=None
+        )
+        self.assertTrue(dbFactory.isFunctional())
+        retValue, db = dbFactory.getDB(dbName=dbName)
+        self.assertTrue(retValue, ReturnValue.OK)
+
+        return dbFactory, db
 
     def test_mongoDBInfra(self):
         db = self.initPV_DB()
@@ -101,6 +116,42 @@ class Test_MongoDBInfra(unittest.TestCase):
         queryDoc, queryDocList = dataMongoDB.getDoc(collection, pv_PassQuerySingle)
         self.assertEqual(len(queryDocList), 1)
         print(queryDocList)
+
+
+
+    def test_mongoDBFactory(self):
+        
+        dbFactory, db = self.init_DBFactory(
+            dbName="pv_BasicFactory"
+        )
+
+        retValue, collection = dbFactory.getCollection(db, pv_mongoCollectionName)
+        self.assertTrue(retValue, ReturnValue.OK)
+
+
+        # create starting point
+        collection.drop()
+                
+        _ = collection.insert_one(pv_Node1)
+        _ = collection.insert_one(pv_Node2)
+        _ = collection.insert_one(pv_Node3)
+
+        retValue, queryDoc, queryDocList = dbFactory.getDoc(collection, pv_FailQuery)
+        self.assertTrue(retValue, ReturnValue.OK)
+        self.assertEqual(len(queryDocList), 0)
+
+        retValue, queryDoc, queryDocList = dbFactory.getDoc(collection, pv_PassQueryMultiple)
+        self.assertTrue(retValue, ReturnValue.OK)
+        self.assertEqual(len(queryDocList), 2)
+        print(queryDocList)
+        
+        retValue, queryDoc, queryDocList = dbFactory.getDoc(collection, pv_PassQuerySingle)
+        self.assertTrue(retValue, ReturnValue.OK)
+        self.assertEqual(len(queryDocList), 1)
+        print(queryDocList)
+
+        retValue = dbFactory.clearCache(db, pv_mongoCollectionName)
+        self.assertTrue(retValue, ReturnValue.OK)
 
     def test_plainMongoDB(self):
         

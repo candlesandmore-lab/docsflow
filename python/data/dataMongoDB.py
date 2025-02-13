@@ -1,17 +1,20 @@
-import pymongo
-import pymongo.errors
 
+
+
+from pymongo.database import Database
+from pymongo import MongoClient
+from pymongo.collection import Collection
 
 # dbLocation=some-host:port
 def initDB(host="localhost", port=27017, replicaSet=None):
 
     if replicaSet is None:
         # e.g. mongodb://localhost:27017/"
-        mongoDBClient = pymongo.MongoClient("mongodb://{}:{}/".format(host, port), 
+        mongoDBClient = MongoClient("mongodb://{}:{}/".format(host, port), 
             serverSelectionTimeoutMS = 2000, 
             tz_aware=True)
     else:
-        mongoDBClient = pymongo.MongoClient("mongodb://{}:{}/".format(host, port), 
+        mongoDBClient = MongoClient("mongodb://{}:{}/".format(host, port), 
             serverSelectionTimeoutMS = 2000, 
             tz_aware=True,
             replicaSet=replicaSet)
@@ -25,7 +28,8 @@ def initDB(host="localhost", port=27017, replicaSet=None):
     
     return mongoDBClient
 
-def getDB(mongoDBClient, dbName):
+def getDB(mongoDBClient : MongoClient, dbName : str) -> Database:
+    mongoDB : Database 
 
     if mongoDBClient is None:
         print("*ERR* : mongo DB client not initialized.")
@@ -35,11 +39,10 @@ def getDB(mongoDBClient, dbName):
             mongoDB = mongoDBClient[dbName]
         except BaseException as Error:
             print ("Could not get/create database: {} {}".format(dbName, Error))
-            mongoDB = None
 
     return mongoDB
 
-def createCollection(mongoDB, collectionName, schemaTimeseriesMeta=None):
+def createCollection(mongoDB : Database, collectionName : str, schemaTimeseriesMeta=None) -> Collection:
     if mongoDB is None:
         print("*ERR* : mongo DB not initialized.")
     else:
