@@ -12,13 +12,13 @@ from bson.raw_bson import RawBSONDocument
 
 from python.infra.logging import getMainLogger
 
-class ReturnValue(str, Enum):
+class mdbhReturnValue(str, Enum):
     OK = "OK"
     FAILURE = "FAILURE"
     CLIENT_FAILURE = "CLIENT_FAILURE"
 
     
-class MongoDB():
+class MongoDBHandler():
 
     def __init__(
             self,
@@ -58,13 +58,13 @@ class MongoDB():
         else:
             return False
 
-    def getDB(self, dbName : str) -> tuple[ReturnValue, Database] :
-        retValue : ReturnValue = ReturnValue.OK
+    def getDB(self, dbName : str) -> tuple[mdbhReturnValue, Database] :
+        retValue : mdbhReturnValue = mdbhReturnValue.OK
         mongoDB : Database
         
         if not self.isFunctional():
             self.logger.error("DB not initialized.")
-            retValue = ReturnValue.CLIENT_FAILURE
+            retValue = mdbhReturnValue.CLIENT_FAILURE
         else:
             # create clean starting point
             try:
@@ -74,17 +74,17 @@ class MongoDB():
                 errMsg = "Could not get/create database: {} {}".format(dbName, Error)
                 print(errMsg)
                 self.logger.error(errMsg)
-                retValue = ReturnValue.FAILURE
+                retValue = mdbhReturnValue.FAILURE
 
         return retValue, mongoDB
 
-    def createCollection(self, mongoDB:Database, collectionName:str, schemaTimeseriesMeta=None) -> tuple[ReturnValue, Collection]:
-        retValue : ReturnValue = ReturnValue.OK
+    def createCollection(self, mongoDB:Database, collectionName:str, schemaTimeseriesMeta=None) -> tuple[mdbhReturnValue, Collection]:
+        retValue : mdbhReturnValue = mdbhReturnValue.OK
         mongoDBCollection : Collection
 
         if not self.isFunctional():
             print("*ERR* : mongo DB not initialized.")
-            retValue = ReturnValue.CLIENT_FAILURE
+            retValue = mdbhReturnValue.CLIENT_FAILURE
         else:
             # create clean starting point
             try:
@@ -104,17 +104,17 @@ class MongoDB():
                 errMsg = "Could not get/create collection: {} - [{}]".format(collectionName, Error)
                 print(errMsg)
                 self.logger.error(errMsg)
-                retValue = ReturnValue.FAILURE
+                retValue = mdbhReturnValue.FAILURE
 
         return retValue, mongoDBCollection
 
-    def getCollection(self, mongoDB:Database, collectionName:str, schemaTimeseriesMeta=None) -> tuple[ReturnValue, Collection]:
-        retValue : ReturnValue = ReturnValue.OK
+    def getCollection(self, mongoDB:Database, collectionName:str, schemaTimeseriesMeta=None) -> tuple[mdbhReturnValue, Collection]:
+        retValue : mdbhReturnValue = mdbhReturnValue.OK
         mongoDBCollection : Collection
 
         if not self.isFunctional():
             print("*ERR* : mongo DB not initialized.")
-            retValue = ReturnValue.CLIENT_FAILURE
+            retValue = mdbhReturnValue.CLIENT_FAILURE
         else:
             # create clean starting point
             try:
@@ -122,18 +122,18 @@ class MongoDB():
                     mongoDBCollection = mongoDB[collectionName]
             except BaseException as Error:
                 print ("Could not get/create collection: {} {}".format(collectionName, Error))
-                retValue = ReturnValue.FAILURE
+                retValue = mdbhReturnValue.FAILURE
 
         return retValue, mongoDBCollection
 
-    def getDoc(self, mongoDBCollection : Collection, query : Any|RawBSONDocument) -> tuple[ReturnValue, Cursor, list[dict]]:
-        retValue : ReturnValue = ReturnValue.OK
+    def getDoc(self, mongoDBCollection : Collection, query : Any|RawBSONDocument) -> tuple[mdbhReturnValue, Cursor, list[dict]]:
+        retValue : mdbhReturnValue = mdbhReturnValue.OK
         mongoDBDoc : Cursor
         mongoDBDocList : list[dict] = []
 
         if not self.isFunctional():
             print("*ERR* : mongo DB not initialized.")
-            retValue = ReturnValue.CLIENT_FAILURE
+            retValue = mdbhReturnValue.CLIENT_FAILURE
         else:
             # create clean starting point
             try:
@@ -144,17 +144,17 @@ class MongoDB():
                     query,
                     Error
                 ))
-                retValue = ReturnValue.FAILURE
+                retValue = mdbhReturnValue.FAILURE
 
         return retValue, mongoDBDoc, mongoDBDocList
 
-    def insertDoc(self, mongoDBCollection : Collection, docDict : dict) -> tuple[ReturnValue, InsertOneResult]:
-        retValue : ReturnValue = ReturnValue.OK
+    def insertDoc(self, mongoDBCollection : Collection, docDict : Any | RawBSONDocument) -> tuple[mdbhReturnValue, InsertOneResult]:
+        retValue : mdbhReturnValue = mdbhReturnValue.OK
         docRecordId : InsertOneResult
 
         if not self.isFunctional():
             print("*ERR* : mongo DB not initialized.")
-            retValue = ReturnValue.CLIENT_FAILURE
+            retValue = mdbhReturnValue.CLIENT_FAILURE
         else:
             # create clean starting point
             try:
@@ -167,17 +167,17 @@ class MongoDB():
                 )
                 print(errMsg)
                 self.logger.error(errMsg)
-                retValue = ReturnValue.FAILURE
+                retValue = mdbhReturnValue.FAILURE
 
         return retValue, docRecordId
 
-    def insertManyDocs(self, mongoDBCollection : Collection, docDictList : Iterable[Any | RawBSONDocument]) -> tuple[ReturnValue, InsertManyResult]:
-        retValue : ReturnValue = ReturnValue.OK
+    def insertManyDocs(self, mongoDBCollection : Collection, docDictList : Iterable[Any | RawBSONDocument]) -> tuple[mdbhReturnValue, InsertManyResult]:
+        retValue : mdbhReturnValue = mdbhReturnValue.OK
         docRecordId : InsertManyResult
 
         if not self.isFunctional():
             print("*ERR* : mongo DB not initialized.")
-            retValue = ReturnValue.CLIENT_FAILURE
+            retValue = mdbhReturnValue.CLIENT_FAILURE
         else:
             # create clean starting point
             try:
@@ -190,16 +190,16 @@ class MongoDB():
                 )
                 print(errMsg)
                 self.logger.error(errMsg)
-                retValue = ReturnValue.FAILURE
+                retValue = mdbhReturnValue.FAILURE
 
         return retValue, docRecordId
             
-    def clearCache(self, mongoDB:Database, collectionName:str) -> ReturnValue:
-        retValue : ReturnValue = ReturnValue.OK
+    def clearCache(self, mongoDB:Database, collectionName:str) -> mdbhReturnValue:
+        retValue : mdbhReturnValue = mdbhReturnValue.OK
 
         if not self.isFunctional():
             print("*ERR* : mongo DB not initialized.")
-            retValue = ReturnValue.CLIENT_FAILURE
+            retValue = mdbhReturnValue.CLIENT_FAILURE
         else:
             # create clean starting point
             try:
@@ -216,6 +216,6 @@ class MongoDB():
                 )
                 print(errMsg)
                 self.logger.error(errMsg)
-                retValue = ReturnValue.FAILURE
+                retValue = mdbhReturnValue.FAILURE
 
         return retValue

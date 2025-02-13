@@ -19,9 +19,9 @@ class NodeType(int, Enum):
         return "{}".format(self.value)
 
 class BaseNode(StreamableItem):
-    def __init__(self, nodeType : Optional[NodeType] = NodeType.PROJECT) -> None:
+    def __init__(self, nodeType : NodeType) -> None:
         super().__init__()
-        self.nodeType = nodeType
+        self.nodeType : NodeType = nodeType
         self.uuid : str = "{}".format(uuid.uuid4())  # later DB IDs
         self.childs : List[BaseNode] = list()
         self.updates : List[UpdateItem] = list()
