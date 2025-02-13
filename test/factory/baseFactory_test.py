@@ -43,7 +43,7 @@ class TestFactory(unittest.TestCase):
 
         retValue, listOfThings = docFlowFactory.getAnyNodeProperties(
             nodeType=NodeType.PROJECT,
-            propertyKeys=['nodeType', 'uuid']
+            propertyKeys=['nodeType', 'uuid', 'name']
         )
         self.assertEqual(retValue, dffReturnValue.OK)
         print(listOfThings)

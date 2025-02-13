@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import unittest
+import uuid
 
 from python.elements.baseNode import BaseNode, NodeType
 from python.elements.userItem import UserItem
@@ -12,6 +13,7 @@ class PV_TreeHelper():
     
     def getBaseNode(self, nodeType : NodeType) -> BaseNode:
         node = BaseNode(
+            name = "PV_TreeHelper_{}".format(uuid.uuid4()),
             nodeType=nodeType
         )
         return node
@@ -28,8 +30,6 @@ class PV_TreeHelper():
         return node
         
 class TestTrees(unittest.TestCase):
-
-
         
     def test_smallTreeStream(self):
         treeHelper = PV_TreeHelper()
