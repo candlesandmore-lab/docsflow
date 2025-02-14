@@ -1,8 +1,10 @@
 
 import os
 from python.elements.baseNode import BaseNode, NodeReturnValue, NodeType
+from python.elements.datetimeItem import DatetimeItem
 from python.elements.userItem import UserItem
 from python.flows.docsFlow.docNode import DocNode
+from python.infra.timeStampMeta import utcDateTimeFromEpochSeconds
 
 #
 # we have two context nodes:
@@ -41,8 +43,12 @@ class ContextNode(BaseNode):
             self.properties['size'] = stats.st_size
             self.properties['owner'] = stats.st_uid
             self.properties['size'] = stats.st_size
-            self.properties['mupdateTime'] = os.path.getmtime(self.properties['contextPath'])
-            self.properties['createTime'] = os.path.getctime(self.properties['contextPath'])
+            self.properties['mupdateTime'] = DatetimeItem(
+                when=utcDateTimeFromEpochSeconds(os.path.getmtime(self.properties['contextPath']))
+            )
+            self.properties['createTime'] = DatetimeItem(
+                when=utcDateTimeFromEpochSeconds(os.path.getctime(self.properties['contextPath']))
+            )
 
         return retValue
         

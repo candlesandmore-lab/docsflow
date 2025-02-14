@@ -1,6 +1,8 @@
 
 import os
 from python.elements.baseNode import BaseNode, NodeReturnValue, NodeType
+from python.elements.datetimeItem import DatetimeItem
+from python.infra.timeStampMeta import utcDateTimeFromEpochSeconds
 
 
 class DocNode(BaseNode):
@@ -35,8 +37,12 @@ class DocNode(BaseNode):
             self.properties['size'] = stats.st_size
             self.properties['owner'] = stats.st_uid
             self.properties['size'] = stats.st_size
-            self.properties['mupdateTime'] = os.path.getmtime(self.properties['docPath'])
-            self.properties['createTime'] = os.path.getctime(self.properties['docPath'])
+            self.properties['mupdateTime'] = DatetimeItem(
+                when=utcDateTimeFromEpochSeconds(os.path.getmtime(self.properties['docPath']))
+            )
+            self.properties['createTime'] = DatetimeItem(
+                when=utcDateTimeFromEpochSeconds(os.path.getctime(self.properties['docPath']))
+            )
 
         return retValue
         

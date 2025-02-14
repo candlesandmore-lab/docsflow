@@ -168,7 +168,7 @@ class MongoDBHandler():
                 print(errMsg)
                 self.logger.error(errMsg)
                 retValue = mdbhReturnValue.FAILURE
-
+            
         return retValue, docRecordId
     
     # create new if not exist, keep _id() if existing: https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.replace_one 
@@ -221,7 +221,7 @@ class MongoDBHandler():
                 print(errMsg)
                 self.logger.error(errMsg)
                 retValue = mdbhReturnValue.FAILURE
-
+            
         return retValue, docRecordId
             
     def clearCache(self, mongoDB:Database, collectionName:str) -> mdbhReturnValue:

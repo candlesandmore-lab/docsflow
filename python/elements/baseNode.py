@@ -22,6 +22,7 @@ class NodeType(str, Enum):
 class NodeReturnValue(str, Enum):
     OK = "OK"
     FAILURE = "FAILURE"
+    
 class BaseNode(StreamableItem):
     def __init__(self, name : str, nodeType : NodeType) -> None:
         super().__init__()

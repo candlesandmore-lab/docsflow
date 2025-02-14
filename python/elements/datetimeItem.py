@@ -10,7 +10,7 @@ class DatetimeItem(StreamableItem):
 
     # stream as datetime key : value
     def __flat_iter__(self) -> bool:
-        return True
+        return False
     
     def __iter__(self): 
         # This allows iteration over the keys of the dictionary 

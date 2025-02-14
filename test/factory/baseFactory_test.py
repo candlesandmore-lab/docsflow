@@ -162,6 +162,7 @@ class TestFactory(unittest.TestCase):
         retValue = docFlowFactory.updateNode(
             nodeFromDB
         )
+
         self.assertEqual(retValue, dffReturnValue.OK)
         print("*PV* : updated top node in DB with UUID[{}].".format(nodeFromDB.uuid))
 
