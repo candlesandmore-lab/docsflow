@@ -35,12 +35,12 @@ class TestFactory(unittest.TestCase):
         collection.drop()
         # --- END OF COLLECTION CLEAR ---
 
-        retValue = docFlowFactory.insertNode(
+        retValue = docFlowFactory.updateNode(
             node=node1
         )
         self.assertEqual(retValue, dffReturnValue.OK)
 
-        retValue = docFlowFactory.insertNode(
+        retValue = docFlowFactory.updateNode(
             node=node2
         )
         self.assertEqual(retValue, dffReturnValue.OK)
@@ -98,13 +98,13 @@ class TestFactory(unittest.TestCase):
         collection.drop()
         # --- END OF COLLECTION CLEAR ---
 
-        retValue = docFlowFactory.insertNode(
+        retValue = docFlowFactory.updateNode(
             node=node1
         )
         self.assertEqual(retValue, dffReturnValue.OK)
         print("*PV* : inserted top node with UUID[{}].".format(node1.uuid))
 
-        retValue = docFlowFactory.insertNode(
+        retValue = docFlowFactory.updateNode(
             node=node2
         )
         self.assertEqual(retValue, dffReturnValue.OK)
@@ -148,14 +148,14 @@ class TestFactory(unittest.TestCase):
         print("*PV* : updated node with UUID[{}] in BL.".format(nodeFromDB.uuid))
         childAdded = treeHelper.getBaseNode(NodeType.CONTEXT)
 
-        nodeFromDB.addChild(
+        nodeFromDB.addOrUpdateChild(
             child=childAdded,
             user=UserItem('test_createInsertGetUpdateProject', 'UNITTEST'))
         
         # (b) add TASK child to existing child
         
         childAdded = treeHelper.getBaseNode(NodeType.TASK)
-        nodeFromDB.childs[0].addChild(
+        nodeFromDB.childs[0].addOrUpdateChild(
             child=childAdded,
             user=UserItem('test_createInsertGetUpdateProject', 'UNITTEST'))
 

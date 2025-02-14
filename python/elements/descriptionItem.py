@@ -3,6 +3,7 @@ from python.elements.streamableItem import StreamableItem
 
 class DescriptionItem(StreamableItem):
     def __init__(self, description : str):
+        super().__init__()
         self.description = description
         
     # stream as datetime key : value

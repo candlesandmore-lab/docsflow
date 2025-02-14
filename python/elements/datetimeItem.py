@@ -5,6 +5,7 @@ from python.elements.streamableItem import StreamableItem
 
 class DatetimeItem(StreamableItem):
     def __init__(self, when : datetime):
+        super().__init__()
         self.when = when
 
     # stream as datetime key : value

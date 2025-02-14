@@ -23,7 +23,7 @@ class PV_TreeHelper():
 
         child1 = self.getBaseNode(NodeType.DOC)
 
-        node.addChild(
+        node.addOrUpdateChild(
             child=child1,
             user=UserItem('frankar', 'PV'))
     

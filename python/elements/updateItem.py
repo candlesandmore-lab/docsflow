@@ -26,6 +26,7 @@ class UpdateItem(StreamableItem):
             description : Optional[DescriptionItem] = None,
             kind : Optional[UpdateType] = UpdateType.UNDEF
         ):
+        super().__init__()
         self.when = when
         self.who = who
         self.description = description

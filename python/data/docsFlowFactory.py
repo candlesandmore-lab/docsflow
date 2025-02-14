@@ -86,26 +86,6 @@ class DocsFlowFactory():
 
         return retValue, collection        
     
-    def insertNode(self, node : BaseNode) -> dffReturnValue:
-        retValue = dffReturnValue.OK
-        collection : Collection
-
-        # insert into correct collection, based on node type
-        retValue, collection = self.findCollection(node.nodeType)
-        if retValue != dffReturnValue.OK:
-            self.logger.error("Unable to identify DB collection to insert [{}] node into.".format(node.nodeType))
-        else:
-            nodeDict = dict(node)
-            mdbhRetValue, insertResult = self.mongoDBHandler.insertDoc(
-                mongoDBCollection=collection,
-                docDict=nodeDict
-            )
-            if mdbhRetValue != mdbhReturnValue.OK:
-                self.logger.error("Failed to insert [{}] node  ".format(node.nodeType))
-                retValue = dffReturnValue.FAILURE
-
-        return retValue
-    
     # update or insert (if node does not exist yet)
     #   - search in correct collection based out BL UUID field of node
     def updateNode(self, node : BaseNode) -> dffReturnValue:
@@ -191,3 +171,23 @@ class DocsFlowFactory():
 
         return retValue, result
 
+    def __DEPRECATED__insertNode(self, node : BaseNode) -> dffReturnValue:
+        retValue = dffReturnValue.OK
+        collection : Collection
+
+        # insert into correct collection, based on node type
+        retValue, collection = self.findCollection(node.nodeType)
+        if retValue != dffReturnValue.OK:
+            self.logger.error("Unable to identify DB collection to insert [{}] node into.".format(node.nodeType))
+        else:
+            nodeDict = dict(node)
+            mdbhRetValue, insertResult = self.mongoDBHandler.insertDoc(
+                mongoDBCollection=collection,
+                docDict=nodeDict
+            )
+            if mdbhRetValue != mdbhReturnValue.OK:
+                self.logger.error("Failed to insert [{}] node  ".format(node.nodeType))
+                retValue = dffReturnValue.FAILURE
+
+        return retValue
+    
