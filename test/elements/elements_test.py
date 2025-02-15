@@ -26,13 +26,13 @@ class TestElements(unittest.TestCase):
 
     def test_datetimeStream(self):
         when=DatetimeItem(utcDateTime())
-        print(dict(when))
+        print(when.toDict())
         print(when.toJson())
 
         # stream inside another class
         print("####################")
         streamParent = pvStream(when)
-        print(dict(streamParent))
+        print(streamParent.toDict())
         print(streamParent.toJson())
 
 
@@ -45,6 +45,7 @@ class TestElements(unittest.TestCase):
         )
         self.assertNotEqual(updateItem, None)
         print("Item streamed : ")
+        print("{}".format(updateItem.toDict()))
         print("{}".format(
             updateItem.toJson()
         ))

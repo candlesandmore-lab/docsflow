@@ -12,10 +12,10 @@ class DatetimeItem(StreamableItem):
     def __flat_iter__(self) -> bool:
         return False
     
-    def __iter__(self): 
+    def toDict(self): 
         # This allows iteration over the keys of the dictionary 
-        yield 'when', self.when.isoformat()
-
+        return self.when.isoformat()
+    '''
     def __getitem__(self, key) -> str: 
         # This allows access to the values using the keys 
         if key == 'when': 
@@ -29,3 +29,4 @@ class DatetimeItem(StreamableItem):
         return "DatetimeItem {}".format(
             self.when.isoformat()
         )
+    '''

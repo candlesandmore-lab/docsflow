@@ -65,16 +65,16 @@ class TestFactory(unittest.TestCase):
         )
         self.assertEqual(retValue, dffReturnValue.OK)
         print("##### FROM DB ##########")
-        print(dict(nodeFromDB))
+        print(nodeFromDB.toDict())
 
         if nodeFromDB.uuid == node1.uuid:
             print("### FROM BL created ###")
-            print(dict(node1))
-            self.assertEqual(dict(nodeFromDB), dict(node1))
+            print(node1.toDict())
+            self.assertEqual(nodeFromDB.toDict(),node1.toDict())
         else:
             print("### FROM BL created ###")
-            print(dict(node2))
-            self.assertEqual(dict(nodeFromDB), dict(node2))
+            print(node2.toDict())
+            self.assertEqual(nodeFromDB.toDict(),node2.toDict())
 
     def test_createInsertGetUpdateProject(self):
         treeHelper = PV_TreeHelper()
@@ -130,17 +130,17 @@ class TestFactory(unittest.TestCase):
         )
         self.assertEqual(retValue, dffReturnValue.OK)
         #print("##### FROM DB ##########")
-        #print(dict(nodeFromDB))
+        #print(nodeFromDB.toDict())
         print("*PV* : got top node from DB with UUID[{}].".format(nodeFromDB.uuid))
 
         if nodeFromDB.uuid == node1.uuid:
             print("### FROM BL created ###")
-            #print(dict(node1))
-            self.assertEqual(dict(nodeFromDB), dict(node1))
+            #print(node1.toDict())
+            self.assertEqual(nodeFromDB.toDict(),node1.toDict())
         else:
             print("### FROM BL created ###")
-            #print(dict(node2))
-            self.assertEqual(dict(nodeFromDB), dict(node2))
+            #print(node2.toDict())
+            self.assertEqual(nodeFromDB.toDict(),node2.toDict())
 
         print("  +-- node matches the one we inserted.")
         # BL updates some fields

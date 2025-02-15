@@ -1,7 +1,7 @@
 
 
 import json
-from typing import Any, Generator, List, Optional
+from typing import List, Optional
 
 
 class StreamableItem():
@@ -9,64 +9,40 @@ class StreamableItem():
         # packing support with class internal properties that shall be ignored
         self.packIgnoreProperties : list[str] = ["packIgnoreProperties"]
 
-    # default: stream objects in hierarchy
-    def __flat_iter__(self) -> bool:
-        return False
-
-    def __iter__(self) -> Generator[tuple[str, Any] | Any | tuple[str, list] | tuple[str, dict], Any, None]:
-
+    def toDict(self) -> dict:
+        resultDict = {}
 
         for key in self.__dict__:
             if key not in self.packIgnoreProperties:
-                #if isinstance(self.__getattribute__(key), DatetimeItem):
-                #    yield key, self.__getattribute__(key).isoformat()
-                # streaming requires some special handling for some objects
-                #  (a) list of entities, like UpdateItem
+                
                 if isinstance(self.__getattribute__(key), List):
-                    streamingDone : bool = False
+                    if len( self.__getattribute__(key)) == 0:
+                        resultDict[key] = self.__getattribute__(key)
+                    else:
+                        # support list of StreamableItem or base type, no arbitrary objects
+                        if isinstance(self.__getattribute__(key)[0], StreamableItem):
+                            resultDict[key] = [item.toDict() for item in self.__getattribute__(key)]
+                        else:
+                            resultDict[key] = self.__getattribute__(key)
                     
-                    streamedList = []
-                    if len(self.__getattribute__(key)) == 0:
-                        yield key, getattr(self, key)
-                    else:
-                        for listEntry in self.__getattribute__(key):
-                            if isinstance(listEntry, StreamableItem):
-                                # e.g. UpdateItem is such StreamableItem
-                                streamingDone = True
-                                #print("Key = {} : Flat = {}".format(key, self.__getattribute__(key).__flat_iter__()))
-                                if listEntry.__flat_iter__():
-                                    # do not build a hierarchy, just stream the objects fields
-                                    yield from listEntry
-                                else:
-                                    fields = listEntry.__iter__()
-                                    listEntryDict = {}
-                                    for f in fields:
-                                        listEntryDict[f[0]] = f[1]
-                                    streamedList.append(listEntryDict)
-                            else:
-                                yield key, getattr(self, key)
-
-                    if streamingDone:
-                        yield key, streamedList
-                elif isinstance(self.__getattribute__(key), StreamableItem):
-                    streamingDone = True
-                    #print("Key = {} : Flat = {}".format(key, self.__getattribute__(key).__flat_iter__()))
-                    if self.__getattribute__(key).__flat_iter__():
-                        # do not build a hierarchy, just stream the objects fields
-                        yield from self.__getattribute__(key)
-                    else:
-                        fields = self.__getattribute__(key).__iter__()
-                        propertyDict = {}
-                        for f in fields:
-                            propertyDict[f[0]] = f[1]
-                        yield key, propertyDict
-                        #self.__getattribute__(key).__iter__()
+                elif isinstance(self.__getattribute__(key), dict):
+                    resultDict[key] = {}
+                    for dictKey in self.__getattribute__(key).keys():
+                        if isinstance(self.__getattribute__(key)[dictKey], StreamableItem):
+                            resultDict[key][dictKey] = self.__getattribute__(key)[dictKey].toDict()
+                        else:
+                            resultDict[key][dictKey] = self.__getattribute__(key)[dictKey]
 
                 else:
-                    yield key, getattr(self, key)
+                    if isinstance(self.__getattribute__(key), StreamableItem):
+                        resultDict[key] = self.__getattribute__(key).toDict()
+                    else:
+                        resultDict[key] = self.__getattribute__(key)
+    
+        return resultDict                    
     
     def toJson(self, indent : Optional[int] = None):
-        __dict = dict(self)
+        __dict = self.toDict()
         return json.dumps(__dict, indent=indent)
     
     def fromJson(

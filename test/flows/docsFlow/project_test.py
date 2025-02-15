@@ -35,7 +35,7 @@ class TestProjects(unittest.TestCase):
             path = r'C:\Users\Frank\SynologyDrive\Drive\LaptopOnly\Steuer\2024'
         )
         self.assertEqual(projectHelper.importStatus, NodeReturnValue.OK)
-        projectDict = dict(projectHelper.getProjectNode())
+        projectDict = projectHelper.getProjectNode().toDict()
         print(projectDict)
 
     def test_createInsertGetRealProject(self):
@@ -45,7 +45,7 @@ class TestProjects(unittest.TestCase):
         self.assertEqual(projectHelper.importStatus, NodeReturnValue.OK)
 
         projectNode = projectHelper.getProjectNode()
-        
+
         dbHelper = PV_MongoHelper()
         retValue, dbHandler = dbHelper.init_DBHandler()
         self.assertEqual(retValue, mdbhReturnValue.OK)
@@ -89,10 +89,11 @@ class TestProjects(unittest.TestCase):
         )
         self.assertEqual(retValue, dffReturnValue.OK)
         #print("##### FROM DB ##########")
-        #print(dict(nodeFromDB))
+        #print(nodeFromDB.toDict())
         print("*PV* : got top node from DB with UUID[{}].".format(nodeFromDB.uuid))
 
-        self.assertEqual(dict(nodeFromDB), dict(projectNode))
+        self.maxDiff = None
+        self.assertEqual(nodeFromDB.toDict(),projectNode.toDict())
 
 if __name__.__contains__("__main__"):
     unittest.main()

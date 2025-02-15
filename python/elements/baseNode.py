@@ -35,7 +35,9 @@ class BaseNode(StreamableItem):
         self.childs : List[BaseNode] = list()
         self.updates : List[UpdateItem] = list()
         self.testIntList = [1, 43, 5]
-        self.properties : dict = {}
+        self.properties : dict = {
+            "foo" : "bar"
+        }
 
     def isValid(self) -> bool:
         if self.name == "":
@@ -91,7 +93,7 @@ class BaseNode(StreamableItem):
         
         self.name = _from_json_dict['name']
         self.uuid = _from_json_dict['uuid']
-        self.nodeType = _from_json_dict['nodeType']
+        self.nodeType = NodeType[_from_json_dict['nodeType']]
         self.testIntList = _from_json_dict['testIntList']
         
         # iterate over tree
@@ -109,6 +111,9 @@ class BaseNode(StreamableItem):
                 jsonString=json.dumps(updateDict)
             )
             self.updates.append(updateNode)
+            
+        # take properties, all simple for now
+        self.properties = _from_json_dict['properties']
 
     def updateProperties(
             self, 
@@ -123,7 +128,7 @@ class BaseNode(StreamableItem):
             value : Any,
             user : UserItem) -> None:
         updMsg = "User [{}] updated project [{}] property [{}] to [{}].".format(
-            dict(user),
+            user.toDict(),
             self.name,
             key,
             value

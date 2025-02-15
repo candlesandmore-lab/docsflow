@@ -29,7 +29,7 @@ class TestStoreNodes(unittest.TestCase):
         # create tree
         treeHelper = PV_TreeHelper()
         node = treeHelper.getHierNode()
-        nodeDict = dict(node)
+        nodeDict = node.toDict()
         print(nodeDict)
 
         docRecordId = dataMongoDB.insertDoc(collection, nodeDict)
@@ -44,7 +44,7 @@ class TestStoreNodes(unittest.TestCase):
         collection = dataMongoDB.getCollection(db, pv_mongoNodeCollectionName)
 
         # query all projects
-        projectQuery = { "nodeType": 0 }
+        projectQuery = { "nodeType" : "PROJECT" }
         queryDoc, queryDocList = dataMongoDB.getDoc(collection, projectQuery)
         self.assertNotEqual(len(queryDocList), 0)
         
@@ -63,7 +63,7 @@ class TestStoreNodes(unittest.TestCase):
             jsonString=json.dumps(projectDict)
         )
 
-        print(dict(retreivedNode))
+        print(retreivedNode.toDict())
 
         # test DB update
         updateResult = collection.update_one({"_id": mongoId}, {"$set" :{"uuid": "affe"}})

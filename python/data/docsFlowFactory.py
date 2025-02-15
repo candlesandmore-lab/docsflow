@@ -97,7 +97,7 @@ class DocsFlowFactory():
         if retValue != dffReturnValue.OK:
             self.logger.error("Unable to identify DB collection to update [{}] node into.".format(node.nodeType))
         else:
-            nodeDict = dict(node)
+            nodeDict = node.toDict()
             mdbhRetValue, insertResult = self.mongoDBHandler.replaceDoc(
                 mongoDBCollection=collection,
                 docDict=nodeDict,
@@ -129,7 +129,7 @@ class DocsFlowFactory():
             for key in propertyKeys:
                 projectionDict[key] = 1
 
-            # { "$project" : { "nodeType": 1, "uuid" : 1, "_id": 1 } }
+            # { "$project" : { "nodeType": "CONTEXT", "uuid" : 1, "_id": 1 } }
             pipeline = [
                 { "$project" : projectionDict }
             ]
@@ -180,7 +180,7 @@ class DocsFlowFactory():
         if retValue != dffReturnValue.OK:
             self.logger.error("Unable to identify DB collection to insert [{}] node into.".format(node.nodeType))
         else:
-            nodeDict = dict(node)
+            nodeDict = node.toDict()
             mdbhRetValue, insertResult = self.mongoDBHandler.insertDoc(
                 mongoDBCollection=collection,
                 docDict=nodeDict

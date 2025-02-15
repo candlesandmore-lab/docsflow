@@ -35,7 +35,7 @@ class TestTrees(unittest.TestCase):
         treeHelper = PV_TreeHelper()
         node = treeHelper.getHierNode()
         
-        print(dict(node))
+        print(node.toDict())
 
     def test_smallTreeStreamUnstream(self):
         treeHelper = PV_TreeHelper()
@@ -53,9 +53,9 @@ class TestTrees(unittest.TestCase):
             jsonString=jsonStream
         )
 
-        print(dict(streamedNode))
+        print(streamedNode.toDict())
 
-        self.assertDictEqual(dict(node), dict(streamedNode))
+        self.assertDictEqual(node.toDict(), streamedNode.toDict())
 
 if __name__.__contains__("__main__"):
     unittest.main()
