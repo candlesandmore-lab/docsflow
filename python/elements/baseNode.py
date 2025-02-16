@@ -16,7 +16,7 @@ class NodeType(str, Enum):
     PROJECT = "ProjectNode"
     CONTEXT = "ContextNode"
     DOC = "DocNode"
-    TASK = "TASK"
+    TASK = "TaskNode"
         
     def __repr__(self): 
         return "{}".format(self.value)

@@ -26,3 +26,7 @@ class DocNodeType(DocFlowNodeType):
 class ContextNodeType(DocFlowNodeType):
     def __init__(self, type : str = "UNDEF", description : str = ""):
         super().__init__(type, description)
+
+class TaskNodeType(DocFlowNodeType):
+    def __init__(self, type : str = "UNDEF", description : str = ""):
+        super().__init__(type, description)

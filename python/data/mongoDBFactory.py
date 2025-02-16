@@ -124,7 +124,7 @@ class MongoDBFactory():
         return retValue
 
     # db.student.aggregate([{ $project: { subject: 1, _id: 0 } }])
-    def getAnyNodeProperties(self, nodeType : NodeType, propertyKeys : list[str]) -> tuple[dffReturnValue, list[str]]:
+    def getAnyNodeProperties(self, nodeType : NodeType, propertyKeys : list[str]) -> tuple[dffReturnValue, list[dict]]:
         result = []
         mdbhRetValuetValue, collection = self.findCollection(nodeType)
         dffRetValue = dffReturnValue.OK

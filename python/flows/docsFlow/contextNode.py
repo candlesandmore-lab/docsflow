@@ -21,6 +21,7 @@ class ContextNode(BaseNode):
             factory=factory)
         
         self.contextType = ContextNodeType()
+        # TODO: set default values for properties, such that stepwise constructed nodes have all props
 
     def fromJson(
             self,
