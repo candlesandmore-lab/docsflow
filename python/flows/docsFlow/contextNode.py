@@ -1,9 +1,11 @@
 
+import json
 import os
+from python.data.dataFactory import DataFactory
 from python.elements.baseNode import BaseNode, NodeReturnValue, NodeType
 from python.elements.datetimeItem import DatetimeItem
 from python.elements.userItem import UserItem
-from python.flows.docsFlow.docNode import DocNode
+from python.flows.docsFlow.docFlowNodeTypes import ContextNodeType
 from python.infra.timeStampMeta import utcDateTimeFromEpochSeconds
 
 #
@@ -11,10 +13,26 @@ from python.infra.timeStampMeta import utcDateTimeFromEpochSeconds
 #  (a) those which are a container for task, not related to any folder on disk (e.g. container for tasks)
 #  (b) those which are represented by a folder on disk
 #
+
 class ContextNode(BaseNode):
-    def __init__(self, name:str, nodeType:NodeType):
-        super().__init__(name, nodeType)
+    def __init__(self, name:str, factory : DataFactory):
+        super().__init__(
+            name=name, 
+            factory=factory)
         
+        self.contextType = ContextNodeType()
+
+    def fromJson(
+            self,
+            jsonString : str
+        ) -> None:
+        super().fromJson(jsonString)
+
+        _from_json_dict = json.loads(jsonString)
+        self.contextType.fromJson(
+            jsonString=json.dumps(_from_json_dict['contextType'])
+        )
+     
     def isValid(self) -> bool:
         result : bool = super().isValid()
         if result:
@@ -71,10 +89,9 @@ class ContextNode(BaseNode):
                 fullDirEntryPath = os.path.join(self.properties['contextPath'], dirEntry)
                 if os.path.isfile(fullDirEntryPath):
 
-                    newDocNode = DocNode(
-                        name = dirEntry,
-                        nodeType=NodeType.DOC
-                    )
+                    newDocNode = self.factory.constructNode(NodeType.DOC)
+                    newDocNode.name = dirEntry
+
                     newDocNode.setDocPath(fullDirEntryPath)
                     newDocNode.refreshProperties()
                     self.addOrUpdateChild(
@@ -83,10 +100,9 @@ class ContextNode(BaseNode):
 
                 # folder -> CONTEXT with folder association
                 elif os.path.isdir(fullDirEntryPath):
-                    newContextNode = ContextNode(
-                        name=dirEntry,
-                        nodeType=NodeType.CONTEXT
-                    )
+                    newContextNode = self.factory.constructNode(NodeType.CONTEXT)
+                    newContextNode.name = dirEntry
+                    
                     newContextNode.setContextPath(fullDirEntryPath)
                     newContextNode.refreshProperties()
                     self.addOrUpdateChild(

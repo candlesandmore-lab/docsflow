@@ -6,8 +6,12 @@ from enum import Enum
 import json
 from pymongo.collection import Collection
 
+from python.data.dataFactory import DataFactory
 from python.data.mongoDBHandler import MongoDBHandler, mdbhReturnValue
 from python.elements.baseNode import BaseNode, NodeType
+from python.flows.docsFlow.contextNode import ContextNode  # noqa: F401
+from python.flows.docsFlow.docNode import DocNode  # noqa: F401
+from python.flows.docsFlow.projectNode import ProjectNode  # noqa: F401
 from python.infra.logging import getMainLogger
 
 class dffReturnValue(str, Enum):
@@ -21,10 +25,16 @@ class dffState(str, Enum):
 # TODO: centralize list and access of collection names
 dffCollections : list[str] = ["DocsFlowProjects"]
 
-class DocsFlowFactory():
-    def __init__(self, mongoDBHandler : MongoDBHandler, dbName : str = "DocsFlowDatabase"):
+class MongoDBFactory():
+    def __init__(
+            self, 
+            nodeFactory : DataFactory,
+            mongoDBHandler : MongoDBHandler, 
+            dbName : str = "DocsFlowDatabase"):
+        
         self.logger = getMainLogger()
         self.mongoDBHandler = mongoDBHandler
+        self.nodeFactory = nodeFactory
         retValue, self.db = self.mongoDBHandler.getDB(
             dbName=dbName
         )
@@ -40,6 +50,7 @@ class DocsFlowFactory():
     def isFunctional(self):
         return self.state == dffState.OK
 
+    
     def flushCaches(self) -> dffReturnValue:
         retValue = dffReturnValue.OK
         if not self.isFunctional():
@@ -164,10 +175,23 @@ class DocsFlowFactory():
                     nodeDict = queryDocList[0]
                     _ = nodeDict.pop("_id")  # of type ObjectId
 
-                    result = BaseNode("", nodeType)
-                    result.fromJson(
-                        jsonString=json.dumps(nodeDict)
-                    )
+                    # re-construct base on class type
+                    if nodeType not in [
+                        NodeType.PROJECT,
+                        NodeType.CONTEXT,
+                        NodeType.DOC
+                    ]:
+                        errMsg = "No operation available to fetch node of type [{}] in factory.".format(
+                            nodeType
+                        )
+                        print(errMsg)
+                        self.logger.error(errMsg)
+                        retValue = dffReturnValue.FAILURE
+                    else:
+                        result = self.nodeFactory.constructNode(nodeType)
+                        result.fromJson(
+                            jsonString=json.dumps(nodeDict)
+                        )
 
         return retValue, result
 

@@ -3,7 +3,8 @@
 
 import unittest
 
-from python.data.docsFlowFactory import DocsFlowFactory, dffReturnValue
+from python.data.docFlowNodeFactory import DocFlowNodeFactory
+from python.data.mongoDBFactory import MongoDBFactory, dffReturnValue
 from python.data.mongoDBHandler import mdbhReturnValue
 from python.elements.baseNode import NodeReturnValue, NodeType
 from python.elements.userItem import UserItem
@@ -12,10 +13,9 @@ from test.data.mongodb_test import PV_MongoHelper
 
 class PV_ProjectHelper():
     def __init__(self, path:str):
-        self.projectNode = ProjectNode(
-            name="PV_projectForConstructionTest",
-            nodeType=NodeType.PROJECT
-        )
+        nodeFactory = DocFlowNodeFactory()
+        self.projectNode : ProjectNode = nodeFactory.constructNode(NodeType.PROJECT)
+        self.projectNode.name="PV_projectForConstructionTest"
 
         self.importStatus = self.projectNode.importFolderContent(
             folder=path,
@@ -50,7 +50,8 @@ class TestProjects(unittest.TestCase):
         retValue, dbHandler = dbHelper.init_DBHandler()
         self.assertEqual(retValue, mdbhReturnValue.OK)
 
-        docFlowFactory = DocsFlowFactory(
+        docFlowFactory = MongoDBFactory(
+            nodeFactory=DocFlowNodeFactory(),
             mongoDBHandler=dbHandler,
             dbName="pv_FactoryTests"
         )

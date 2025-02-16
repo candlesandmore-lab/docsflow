@@ -1,0 +1,51 @@
+{
+    "name": "PV_TreeHelper_ProjNode_dc0b3083-7c80-4cee-922f-3154722bbf43",
+    "uuid": "9bce7243-a971-46f6-9051-94e2ff3b26d8",
+    "childs": [
+        {
+            "name": "PV_TreeHelper_DocNode_05d31109-aed3-4564-b2bb-6e6aa7e1ec61",
+            "uuid": "da9b2596-ab7e-4c92-86a4-8e2f73384171",
+            "childs": [],
+            "updates": [],
+            "testIntList": [
+                1,
+                43,
+                5
+            ],
+            "properties": {
+                "foo": "bar"
+            },
+            "docType": {
+                "type": "UNDEF",
+                "description": ""
+            },
+            "nodeType": "DocNode"
+        }
+    ],
+    "updates": [
+        {
+            "when": "2025-02-16T12:45:53.023649+00:00",
+            "who": {
+                "name": "frankar",
+                "role": "PV"
+            },
+            "description": {
+                "description": "[create] child [NodeType.DOC]/[PV_TreeHelper_DocNode_05d31109-aed3-4564-b2bb-6e6aa7e1ec61]."
+            },
+            "kind": 1
+        }
+    ],
+    "testIntList": [
+        1,
+        43,
+        5
+    ],
+    "properties": {
+        "foo": "bar"
+    },
+    "contextType": {
+        "type": "UNDEF",
+        "description": ""
+    },
+    "nodeType": "ProjectNode"
+}

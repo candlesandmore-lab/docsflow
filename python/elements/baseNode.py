@@ -2,6 +2,7 @@ from enum import Enum
 import json
 from typing import List, Optional, Any
 import uuid
+from python.data.dataFactory import DataFactory
 from python.elements.datetimeItem import DatetimeItem
 from python.elements.descriptionItem import DescriptionItem
 from python.elements.streamableItem import StreamableItem
@@ -11,9 +12,10 @@ from python.infra.logging import getMainLogger
 from python.infra.timeStampMeta import utcDateTime
 
 class NodeType(str, Enum):
-    PROJECT = "PROJECT"
-    CONTEXT = "CONTEXT"
-    DOC = "DOC"
+    BASENODE = "BaseNode"
+    PROJECT = "ProjectNode"
+    CONTEXT = "ContextNode"
+    DOC = "DocNode"
     TASK = "TASK"
         
     def __repr__(self): 
@@ -24,13 +26,18 @@ class NodeReturnValue(str, Enum):
     FAILURE = "FAILURE"
     
 class BaseNode(StreamableItem):
-    def __init__(self, name : str, nodeType : NodeType) -> None:
+    def __init__(
+            self, 
+            name : str, 
+            factory : DataFactory) -> None:
         super().__init__()
         self.logger = getMainLogger()
         self.packIgnoreProperties.append("logger")
 
+        self.factory = factory
+        self.packIgnoreProperties.append("factory")
+
         self.name = name
-        self.nodeType : NodeType = nodeType
         self.uuid : str = "{}".format(uuid.uuid4())  # later DB IDs
         self.childs : List[BaseNode] = list()
         self.updates : List[UpdateItem] = list()
@@ -45,6 +52,10 @@ class BaseNode(StreamableItem):
 
         return self.name != ""
     
+    # called by factory
+    def setNodeType(self, nodeType : str) -> None:
+        self.nodeType = NodeType(nodeType)
+
     def refreshProperties(self) -> NodeReturnValue:
         return NodeReturnValue.OK
 
@@ -93,12 +104,12 @@ class BaseNode(StreamableItem):
         
         self.name = _from_json_dict['name']
         self.uuid = _from_json_dict['uuid']
-        self.nodeType = NodeType[_from_json_dict['nodeType']]
+        self.nodeType = NodeType(_from_json_dict['nodeType'])
         self.testIntList = _from_json_dict['testIntList']
         
         # iterate over tree
         for childDict in _from_json_dict['childs']:
-            childNode = BaseNode("", childDict['nodeType'])
+            childNode = self.factory.constructNode(childDict['nodeType'])
             childNode.fromJson(
                 jsonString=json.dumps(childDict)
             )

@@ -5,16 +5,19 @@ import json
 import unittest
 
 from python.data import dataMongoDB
-from python.elements.baseNode import BaseNode, NodeType
-from test.data.mongodb_test import PV_MongoHelper
+from python.data.docFlowNodeFactory import DocFlowNodeFactory
+from python.elements.baseNode import NodeType
+from python.flows.docsFlow.projectNode import ProjectNode
+from test.data.mongodb_test import PV_MongoHelper, pv_mongoDBName
 from test.elements.tree_test import PV_TreeHelper
+from pymongo.database import Database
 
 pv_mongoNodeCollectionName = "pv_ProjectNodes"
 
 class TestStoreNodes(unittest.TestCase):
 
 
-    def test_storeHierNode(self):
+    def test_storeHierNode(self) -> Database:
         mongoDBHelper = PV_MongoHelper()
         db = mongoDBHelper.initPV_DB()
 
@@ -28,37 +31,46 @@ class TestStoreNodes(unittest.TestCase):
                 
         # create tree
         treeHelper = PV_TreeHelper()
-        node = treeHelper.getHierNode()
+        node = treeHelper.getProjectDocHierNode()
         nodeDict = node.toDict()
         print(nodeDict)
 
         docRecordId = dataMongoDB.insertDoc(collection, nodeDict)
         print(docRecordId)
+
+        print("*PV* : added PROJECT node to DB[{}] / COLLECTION [{}].".format(
+            pv_mongoDBName,
+            pv_mongoNodeCollectionName
+        ))
         # _ = collection.insert_one(nodeDict)
 
         return db
 
-    def test_retreiveProject(self):
+    def test_retreiveProject(self) -> None:
         # construct and store node hierarchy
         db = self.test_storeHierNode()
         collection = dataMongoDB.getCollection(db, pv_mongoNodeCollectionName)
 
         # query all projects
-        projectQuery = { "nodeType" : "PROJECT" }
+        print("*PV* : query PROJECT nodes from DB[{}] / COLLECTION [{}].".format(
+            pv_mongoDBName,
+            pv_mongoNodeCollectionName
+        ))
+        projectQuery = { "nodeType" : "ProjectNode" }
         queryDoc, queryDocList = dataMongoDB.getDoc(collection, projectQuery)
         self.assertNotEqual(len(queryDocList), 0)
         
         # reconstruct BL object tree
         projectDict = queryDocList[0]
         print(projectDict) # dict
-        # TODO: move to BL
-        #   - remove and remember MongoDB ID
+
+        #  This is part of the DB Factory in the real system
         mongoId = projectDict.pop("_id")  # of type ObjectId
 
-        retreivedNode = BaseNode(
-            name="",
-            nodeType=NodeType.PROJECT
-        )
+        # This would be done in the DB factory later
+        factory = DocFlowNodeFactory()
+        retreivedNode : ProjectNode = factory.constructNode(NodeType.PROJECT)
+
         retreivedNode.fromJson(
             jsonString=json.dumps(projectDict)
         )

@@ -63,7 +63,7 @@ class PV_MongoHelper():
     def __init__(self):
         pass
         
-    def initPV_DB(self):
+    def initPV_DB(self) -> Database:
         dbClient = dataMongoDB.initDB(pv_mongoDBHost, pv_mongoDBPort)
 
         db = dataMongoDB.getDB(dbClient, pv_mongoDBName)

@@ -4,51 +4,61 @@
 import unittest
 import uuid
 
+from python.data.baseNodeFactory import BaseNodeFactory
+from python.data.docFlowNodeFactory import DocFlowNodeFactory
 from python.elements.baseNode import BaseNode, NodeType
 from python.elements.userItem import UserItem
+from python.flows.docsFlow.docNode import DocNode
+from python.flows.docsFlow.projectNode import ProjectNode
 
 class PV_TreeHelper():
     def __init__(self):
         pass
     
-    def getBaseNode(self, nodeType : NodeType) -> BaseNode:
-        node = BaseNode(
-            name = "PV_TreeHelper_{}".format(uuid.uuid4()),
-            nodeType=nodeType
-        )
+    def getBaseNode(self) -> BaseNode:
+        factory = BaseNodeFactory()
+
+        node : BaseNode = factory.constructNode(NodeType.BASENODE)
+        node.name = "PV_TreeHelper_BaseNode_{}".format(uuid.uuid4())
+
         return node
     
-    def getHierNode(self) -> BaseNode:
-        node = self.getBaseNode(NodeType.PROJECT)
+    def getProjectDocHierNode(self) -> BaseNode:
 
-        child1 = self.getBaseNode(NodeType.DOC)
+        factory = DocFlowNodeFactory()
+        # project
+        node : ProjectNode = factory.constructNode(NodeType.PROJECT)
+        node.name = "PV_TreeHelper_ProjNode_{}".format(uuid.uuid4())
+        
+        # doc child
+        child : DocNode = factory.constructNode(NodeType.DOC)
+        child.name = "PV_TreeHelper_DocNode_{}".format(uuid.uuid4())
 
         node.addOrUpdateChild(
-            child=child1,
+            child=child,
             user=UserItem('frankar', 'PV'))
     
         return node
         
 class TestTrees(unittest.TestCase):
         
-    def test_smallTreeStream(self):
+    def test_smallTreeStream(self) -> None:
         treeHelper = PV_TreeHelper()
-        node = treeHelper.getHierNode()
+        node = treeHelper.getBaseNode()
         
         print(node.toDict())
 
-    def test_smallTreeStreamUnstream(self):
+    def test_smallTreeStreamUnstream(self) -> None:
         treeHelper = PV_TreeHelper()
-        node = treeHelper.getHierNode()
+        node = treeHelper.getProjectDocHierNode()
         
         #
         jsonStream = node.toJson()
         print(jsonStream)
 
-        streamedNode = BaseNode(
-            name="",
-            nodeType = NodeType.PROJECT
-        )
+        # unstream from JSON, reconstructing the correct object types
+        factory = DocFlowNodeFactory()
+        streamedNode : ProjectNode = factory.constructNode(NodeType.PROJECT)
         streamedNode.fromJson(
             jsonString=jsonStream
         )

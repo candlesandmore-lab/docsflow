@@ -3,8 +3,9 @@
 
 import unittest
 
+from python.data.docFlowNodeFactory import DocFlowNodeFactory
 from python.data.mongoDBHandler import mdbhReturnValue
-from python.data.docsFlowFactory import DocsFlowFactory, dffReturnValue
+from python.data.mongoDBFactory import MongoDBFactory, dffReturnValue
 from python.elements.baseNode import NodeType
 from python.elements.userItem import UserItem
 from test.data.mongodb_test import PV_MongoHelper
@@ -15,14 +16,15 @@ class TestFactory(unittest.TestCase):
 
     def test_createInsertGetProject(self):
         treeHelper = PV_TreeHelper()
-        node1 = treeHelper.getHierNode()
-        node2 = treeHelper.getHierNode()
+        node1 = treeHelper.getProjectDocHierNode()
+        node2 = treeHelper.getProjectDocHierNode()
 
         dbHelper = PV_MongoHelper()
         retValue, dbHandler = dbHelper.init_DBHandler()
         self.assertEqual(retValue, mdbhReturnValue.OK)
 
-        docFlowFactory = DocsFlowFactory(
+        docFlowFactory = MongoDBFactory(
+            nodeFactory=DocFlowNodeFactory(),
             mongoDBHandler=dbHandler,
             dbName="pv_FactoryTests"
         )
@@ -78,14 +80,15 @@ class TestFactory(unittest.TestCase):
 
     def test_createInsertGetUpdateProject(self):
         treeHelper = PV_TreeHelper()
-        node1 = treeHelper.getHierNode()
-        node2 = treeHelper.getHierNode()
+        node1 = treeHelper.getProjectDocHierNode()
+        node2 = treeHelper.getProjectDocHierNode()
 
         dbHelper = PV_MongoHelper()
         retValue, dbHandler = dbHelper.init_DBHandler()
         self.assertEqual(retValue, mdbhReturnValue.OK)
 
-        docFlowFactory = DocsFlowFactory(
+        docFlowFactory = MongoDBFactory(
+            nodeFactory=DocFlowNodeFactory(),
             mongoDBHandler=dbHandler,
             dbName="pv_FactoryTests"
         )
@@ -146,6 +149,7 @@ class TestFactory(unittest.TestCase):
         # BL updates some fields
         #  (a) add child to top
         print("*PV* : updated node with UUID[{}] in BL.".format(nodeFromDB.uuid))
+        # TODO: crete correct node type
         childAdded = treeHelper.getBaseNode(NodeType.CONTEXT)
 
         nodeFromDB.addOrUpdateChild(
@@ -153,7 +157,7 @@ class TestFactory(unittest.TestCase):
             user=UserItem('test_createInsertGetUpdateProject', 'UNITTEST'))
         
         # (b) add TASK child to existing child
-        
+         # TODO: crete correct node type
         childAdded = treeHelper.getBaseNode(NodeType.TASK)
         nodeFromDB.childs[0].addOrUpdateChild(
             child=childAdded,
