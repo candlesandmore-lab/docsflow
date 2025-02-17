@@ -11,6 +11,9 @@ from python.elements.userItem import UserItem
 
 class NodeStatus(float, Enum):
     UNDEF = -1
+    AVAILABLE = 0
+    REVIEWED = 0.5
+    CLOSED = 1
 
 class NodeStatusWeight(int, Enum):
     LOW = 1
@@ -18,6 +21,12 @@ class NodeStatusWeight(int, Enum):
     MEDIUM = 5
     HIGH = 8
     CRITICAL = 13
+
+class StatusColor(str, Enum):
+    RED = "RED"
+    ORANGE = "ORANGE"
+    YELLOW = "YELLOW"
+    GREEN = "GREEN"
 
 class BaseNodeWithStatus(BaseNode):
     def __init__(self, name:str, factory : DataFactory) -> None:
@@ -82,13 +91,13 @@ class BaseNodeWithStatus(BaseNode):
 
         return retValue
 
-    def rolledUpStatus(self) -> tuple[NodeReturnValue, float]:
+    def rolledUpStatus(self) -> tuple[NodeReturnValue, float, StatusColor]:
         
         result : float = NodeStatus(NodeStatus.UNDEF)
         retValue = NodeReturnValue.OK
         
         childsWeightedStatus : float = 0.0
-        childsWeight : int = 1
+        childsWeight : int = 0
         
         for statusKey in self.childStatusWeights.keys():
             nReturnValue, child = self.childByUUID(statusKey)
@@ -103,8 +112,13 @@ class BaseNodeWithStatus(BaseNode):
                 break
             else:
                 if isinstance(child, BaseNodeWithStatus):
-                    childsWeightedStatus = childsWeightedStatus + self.childStatusWeights[statusKey] *  child.status
-                    childsWeight = childsWeight + self.childStatusWeights[statusKey]
+                    childNRetValue, childRolledUpStatus, childRolledUpStatusColor = child.rolledUpStatus()
+                    if childNRetValue != NodeReturnValue.OK:
+                        retValue = NodeReturnValue.FAILURE
+                        break
+                    else:
+                        childsWeightedStatus = childsWeightedStatus + self.childStatusWeights[statusKey] * childRolledUpStatus 
+                        childsWeight = childsWeight + self.childStatusWeights[statusKey]
                 else:
                     self.logger.error("Node [{}/{}] has child with UUID[{}] which is not a StatusNode.".format(
                         self.name,
@@ -118,8 +132,39 @@ class BaseNodeWithStatus(BaseNode):
         if retValue == NodeReturnValue.OK:
             if len(self.childStatusWeights) == 0:
                 # node itself must provide return value
-                result = NodeStatus(NodeStatus.UNDEF)
+                result = NodeStatus(self.status)
             else:
                 result = childsWeightedStatus / float(childsWeight)
+
+            if abs(result) > 1:
+                retValue = NodeReturnValue.FAILURE
+                self.logger.error("Node [{}/{}] has rolled up status out of boundaries [{}], should be in (-1,1).".format(
+                            self.name,
+                            self.nodeType,
+                            result
+                ))        
+
+        nRetValue, statusColor = self.statusAsColor(result)
+
+        return retValue, result, statusColor
+
+    def statusAsColor(self, status : float) -> tuple[NodeReturnValue, StatusColor]:
+        result : StatusColor
+
+        if abs(status) > 1:
+            retValue = NodeReturnValue.FAILURE
+            self.logger.error("tatus out of boundaries [{}], should be in (-1,1).".format(
+                status
+            ))
+        else:  
+            retValue = NodeReturnValue.OK
+            if status < 0:
+                result = StatusColor.RED
+            elif status < 0.5:
+                result = StatusColor.ORANGE
+            elif status < 1:
+                result = StatusColor.YELLOW
+            else:
+                result = StatusColor.GREEN
 
         return retValue, result

@@ -1,0 +1,17 @@
+{
+    "someFile" : {
+        "plan" : [
+            ["AVAILABLE", "2025-02-17T16:25:16"],
+            ["REVIEWED", "2025-02-18T16:25:16"]
+        ]
+    },
+    "someOtherFile" : {
+        "plan" : [
+            ["AVAILABLE", "2025-03-17T16:25:16"],
+            ["REVIEWED", "2025-03-18T16:25:16"]
+        ],
+        "status" : [
+            ["AVAILABLE", "2025-01-19T16:25:16"]
+        ]
+    }
+}
