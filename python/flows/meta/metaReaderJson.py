@@ -30,7 +30,8 @@ class MetaReaderJson():
             # files -> DOC
             for dirEntry in os.listdir(folder):
                 fullDirEntryPath = os.path.join(folder, dirEntry)
-                # test
+                # TODO: handle context to directory aliasing
+                #            itemKey == context, includes field 'alias' with dirpath from here on.
                 if dirEntry == ".docFlowMeta.json" and os.path.isfile(fullDirEntryPath):
                     with open(fullDirEntryPath) as fileHandler:
                         # add context own tasks

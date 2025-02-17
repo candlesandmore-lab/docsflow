@@ -2,7 +2,7 @@
 import json
 import os
 from python.data.dataFactory import DataFactory
-from python.elements.baseNode import BaseNode, NodeReturnValue, NodeType
+from python.elements.baseNode import NodeReturnValue
 from python.elements.datetimeItem import DatetimeItem
 from python.flows.docsFlow.docFlowNodeTypes import DocNodeType
 from python.flows.status.baseNodeWithStatus import BaseNodeWithStatus

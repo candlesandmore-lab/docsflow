@@ -2,7 +2,7 @@
 import json
 import os
 from python.data.dataFactory import DataFactory
-from python.elements.baseNode import BaseNode, NodeReturnValue, NodeType
+from python.elements.baseNode import NodeReturnValue, NodeType
 from python.elements.datetimeItem import DatetimeItem
 from python.elements.userItem import UserItem
 from python.flows.docsFlow.docFlowNodeTypes import ContextNodeType
@@ -86,6 +86,8 @@ class ContextNode(BaseNodeWithStatus):
         if not self.isValid():
             retValue = NodeReturnValue.FAILURE
         else:
+            # TODO: handle context to directory aliasing, read from .docFlowMeta.json
+            #            itemKey == context, includes field 'alias' with dirpath from here on.
             # files -> DOC
             for dirEntry in os.listdir(self.properties['contextPath']):
                 fullDirEntryPath = os.path.join(self.properties['contextPath'], dirEntry)

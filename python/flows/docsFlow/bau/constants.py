@@ -1,14 +1,14 @@
 from enum import Enum
 
 
-ContextType : list[str] = [
+__DEPRECATED_ContextType : list[str] = [
     "PLANUNG",
     "BRANDSCHUTZ"
     "ABNAHME"
     "STATIK"
 ]
    
-class DocType(str, Enum):
+class __DEPRECATED_DocType(str, Enum):
     BAUGENEHMIGUNG = "BAUGENEHMIGUNG"
     ZERTIFIKAT = "ZERTIFIKAT"
     PROTOKOLL = "ABNAHMEPROTOKOLL"
