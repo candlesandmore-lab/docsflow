@@ -1,10 +1,10 @@
-{
-    "name": "PV_TreeHelper_ProjNode_dc0b3083-7c80-4cee-922f-3154722bbf43",
-    "uuid": "9bce7243-a971-46f6-9051-94e2ff3b26d8",
+'{
+    "name": "PV_TreeHelper_ProjNode_3d6f5e28-2270-45a3-a688-74a372985ab6",
+    "uuid": "6f7c0b2e-ac4e-421b-997a-27fc8fbb5fd5",
     "childs": [
         {
-            "name": "PV_TreeHelper_DocNode_05d31109-aed3-4564-b2bb-6e6aa7e1ec61",
-            "uuid": "da9b2596-ab7e-4c92-86a4-8e2f73384171",
+            "name": "PV_TreeHelper_DocNode_5832d613-18df-4ff6-b28b-e5217c7a65e3",
+            "uuid": "48ca6d23-f500-4ca6-b133-d6596dd5db85",
             "childs": [],
             "updates": [],
             "testIntList": [
@@ -15,6 +15,8 @@
             "properties": {
                 "foo": "bar"
             },
+            "status": -1.0,
+            "childStatusWeights": {},
             "docType": {
                 "type": "UNDEF",
                 "description": ""
@@ -24,13 +26,13 @@
     ],
     "updates": [
         {
-            "when": "2025-02-16T12:45:53.023649+00:00",
+            "when": "2025-02-17T11:11:32.798669+00:00",
             "who": {
                 "name": "frankar",
                 "role": "PV"
             },
             "description": {
-                "description": "[create] child [NodeType.DOC]/[PV_TreeHelper_DocNode_05d31109-aed3-4564-b2bb-6e6aa7e1ec61]."
+                "description": "[create] child [NodeType.DOC]/[PV_TreeHelper_DocNode_5832d613-18df-4ff6-b28b-e5217c7a65e3]."
             },
             "kind": 1
         }
@@ -43,9 +45,9 @@
     "properties": {
         "foo": "bar"
     },
-    "contextType": {
-        "type": "UNDEF",
-        "description": ""
+    "status": -1.0,
+    "childStatusWeights": {
+        "48ca6d23-f500-4ca6-b133-d6596dd5db85": 13
     },
     "nodeType": "ProjectNode"
-}
+}'

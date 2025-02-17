@@ -1,13 +1,11 @@
 
 import json
-import os
 from python.data.dataFactory import DataFactory
-from python.elements.baseNode import BaseNode, NodeReturnValue, NodeType
-from python.elements.datetimeItem import DatetimeItem
-from python.flows.docsFlow.docFlowNodeTypes import DocNodeType, TaskNodeType
-from python.infra.timeStampMeta import utcDateTimeFromEpochSeconds
+from python.elements.baseNode import NodeReturnValue
+from python.flows.docsFlow.docFlowNodeTypes import TaskNodeType
+from python.flows.status.baseNodeWithStatus import BaseNodeWithStatus
 
-class TaskNode(BaseNode):
+class TaskNode(BaseNodeWithStatus):
     def __init__(self, name:str, factory : DataFactory):
         super().__init__(
             name=name, 

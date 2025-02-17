@@ -5,9 +5,10 @@ from python.data.dataFactory import DataFactory
 from python.elements.baseNode import BaseNode, NodeReturnValue, NodeType
 from python.elements.datetimeItem import DatetimeItem
 from python.flows.docsFlow.docFlowNodeTypes import DocNodeType
+from python.flows.status.baseNodeWithStatus import BaseNodeWithStatus
 from python.infra.timeStampMeta import utcDateTimeFromEpochSeconds
 
-class DocNode(BaseNode):
+class DocNode(BaseNodeWithStatus):
     def __init__(self, name:str, factory : DataFactory):
         super().__init__(
             name=name, 

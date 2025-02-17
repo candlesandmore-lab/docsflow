@@ -6,6 +6,7 @@ from python.elements.baseNode import BaseNode, NodeReturnValue, NodeType
 from python.elements.datetimeItem import DatetimeItem
 from python.elements.userItem import UserItem
 from python.flows.docsFlow.docFlowNodeTypes import ContextNodeType
+from python.flows.status.baseNodeWithStatus import BaseNodeWithStatus
 from python.infra.timeStampMeta import utcDateTimeFromEpochSeconds
 
 #
@@ -14,7 +15,7 @@ from python.infra.timeStampMeta import utcDateTimeFromEpochSeconds
 #  (b) those which are represented by a folder on disk
 #
 
-class ContextNode(BaseNode):
+class ContextNode(BaseNodeWithStatus):
     def __init__(self, name:str, factory : DataFactory):
         super().__init__(
             name=name, 

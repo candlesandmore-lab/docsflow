@@ -64,7 +64,10 @@ class TestTrees(unittest.TestCase):
         )
 
         print(streamedNode.toDict())
+        print(node.toDict())
 
+
+        self.maxDiff = None
         self.assertDictEqual(node.toDict(), streamedNode.toDict())
 
 if __name__.__contains__("__main__"):
