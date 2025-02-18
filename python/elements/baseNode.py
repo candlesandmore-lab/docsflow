@@ -41,11 +41,9 @@ class BaseNode(StreamableItem):
         self.uuid : str = "{}".format(uuid.uuid4())  # later DB IDs
         self.childs : List[BaseNode] = list()
         self.updates : List[UpdateItem] = list()
-        self.testIntList = [1, 43, 5]
-        self.properties : dict = {
-            "foo" : "bar"
-        }
-
+        #self.testIntList = [1, 43, 5]
+        self.properties : dict = {}
+        
     def isValid(self) -> bool:
         if self.name == "":
             self.logger.error("Node is missing name property.")

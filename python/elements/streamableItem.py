@@ -9,6 +9,7 @@ class StreamableItem():
         # packing support with class internal properties that shall be ignored
         self.packIgnoreProperties : list[str] = ["packIgnoreProperties"]
 
+    # TODO: simplify with usage of StreamableList and StreamableDict in BL data nodes
     def toDict(self) -> dict:
         resultDict = {}
 

@@ -4,8 +4,13 @@
 import json
 import unittest
 
+from python.data.docFlowNodeFactory import DocFlowNodeFactory
+from python.elements.baseNode import NodeReturnValue
 from python.elements.streamableItem import StreamableDict, StreamableList
+from python.elements.userItem import UserItem
 from python.flows.meta.metaReaderJson import MetaReaderJson
+from python.flows.ui.json.projectJsonUI import ProjectJsonUI
+from test.flows.docsFlow.project_test import PV_ProjectHelper
 
 class TestJsonMeta(unittest.TestCase):
 
@@ -38,6 +43,38 @@ class TestJsonMeta(unittest.TestCase):
 
         self.assertEqual(1, 1)  # a == b
 
+    def test_importProjectWithMetaData(self):
+        projectDir = r'C:\Users\Frank\SynologyDrive\Drive\LaptopOnly\github\docsflow\test\meta\testData'
+        projectHelper = PV_ProjectHelper(
+            path = projectDir
+        )
+        self.assertEqual(projectHelper.importStatus, NodeReturnValue.OK)
+        projectDict = projectHelper.getProjectNode().toDict()
+        print(projectDict)
+
+        user = UserItem(
+            name="FrankA",
+            role="Steuerpflichtiger"
+        )
+
+        docNodeFactory = DocFlowNodeFactory()
+
+        ui = ProjectJsonUI(
+            user=user,
+            docNodeFactory=docNodeFactory,
+            project=projectHelper.getProjectNode(),
+            metaDir=projectDir
+        )
+
+        ui.mergeMetaData()
+        
+        r = ui.project.toDict()
+
+        testResult = "{}/test_importProjectWithMetaData.json".format(
+            projectDir
+        )
+        with open(testResult, 'w', encoding='utf-8') as f:
+            json.dump(r, f, ensure_ascii=False, indent=4)
 
 if __name__.__contains__("__main__"):
     unittest.main()

@@ -33,28 +33,49 @@ class MetaReaderJson(StreamableItem):
             success = False
         else:
             # files -> DOC
-            for dirEntry in os.listdir(folder):
-                fullDirEntryPath = os.path.join(folder, dirEntry)
-                # TODO: handle context to directory aliasing
-                #            itemKey == context, includes field 'alias' with dirpath from here on.
-                if dirEntry == ".docFlowMeta.json" and os.path.isfile(fullDirEntryPath):
-                    with open(fullDirEntryPath) as fileHandler:
-                        # add context own tasks
-                        contextMetaDict = json.load(fileHandler)
-                        for itemKey in contextMetaDict:
-                            success, metaTree[itemKey] = self.__importItemMeta(contextMetaDict[itemKey])
-                            if not success:
-                                self.logger.error("Cannot import meta data for [{}] from [{}].".format(
-                                    itemKey,
+            localMetaFilePath = "{}/.docFlowMeta.json".format(folder)
+            if not os.path.exists(localMetaFilePath):
+                # Need meta data file to map child context to context types
+                self.logger.warning("Skip meta data search at [{}] due to missing .docFlowMetaData.json".format(
+                    folder
+                ))
+            else:
+                # read local meta data file first to understand child context
+                with open(localMetaFilePath) as fileHandler:
+                    # add context own tasks
+                    contextMetaDict = json.load(fileHandler)
+                    for itemKey in contextMetaDict:
+
+                        success, metaTree[itemKey] = self.__importItemMeta(contextMetaDict[itemKey]) 
+                        if not success:
+                            self.logger.error("Cannot import meta data for [{}] from [{}].".format(
+                                itemKey,
+                                localMetaFilePath
+                            ))
+
+
+                # check hierarchical data
+                for dirEntry in os.listdir(folder):
+                    fullDirEntryPath = os.path.join(folder, dirEntry)
+                    if os.path.isdir(fullDirEntryPath):
+                        success, subDirMeta = self.importFolderMetadata(fullDirEntryPath)
+                        # find the relevant meta data tree with same name property
+                        if success:
+                            foundMetaDataForSubDir = False
+                            for nodeTypeKey in metaTree.keys():
+                                fieldExists, dirnameWithLocalMetadata = getFieldSave(metaTree[nodeTypeKey], 'name', None)
+                                if dirnameWithLocalMetadata == dirEntry:
+                                    foundMetaDataForSubDir = True
+                                    metaTree[nodeTypeKey].update(subDirMeta)
+                            
+                            if not foundMetaDataForSubDir:
+                                success = False
+                                self.logger.error("Found sub-dir [{}] with meta-data which is not mentioned in .docFlowMeta.json of its parent dir. Unable to import and map this data.".format(
                                     fullDirEntryPath
                                 ))
-                                break
-                                                            
-                # folder -> CONTEXT with folder association
-                elif os.path.isdir(fullDirEntryPath):
-                    success, metaTree[dirEntry] = self.importFolderMetadata(fullDirEntryPath)
-                    if not success:
-                        break
+                        
+                        if not success:
+                            break
 
         return success, metaTree
 
@@ -67,11 +88,6 @@ class MetaReaderJson(StreamableItem):
         
         if success and 'status' in contextMetaDict.keys():
             success, result['status'] = self.__importMetaStatusList(contextMetaDict['status'])
-
-        # node meta properties
-        nodeTypeInfo = DocFlowNodeType()
-        nodeTypeInfo.fromDict(contextMetaDict)
-        result['nodeType'] = nodeTypeInfo
 
         fieldExists, metaName = getFieldSave(contextMetaDict, 'name', None)
         updateFieldIfValueNotNone(result, 'name', metaName)

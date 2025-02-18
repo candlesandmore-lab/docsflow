@@ -1,53 +1,121 @@
-'{
-    "name": "PV_TreeHelper_ProjNode_3d6f5e28-2270-45a3-a688-74a372985ab6",
-    "uuid": "6f7c0b2e-ac4e-421b-997a-27fc8fbb5fd5",
-    "childs": [
-        {
-            "name": "PV_TreeHelper_DocNode_5832d613-18df-4ff6-b28b-e5217c7a65e3",
-            "uuid": "48ca6d23-f500-4ca6-b133-d6596dd5db85",
-            "childs": [],
-            "updates": [],
-            "testIntList": [
-                1,
-                43,
-                5
+{
+    "ACCOUNT.0": {
+        "plan": [
+            {
+                "state": "AVAILABLE",
+                "targetDate": "2025-02-24T16:25:16"
+            },
+            {
+                "state": "REVIEWED",
+                "targetDate": "2025-02-27T16:25:16"
+            }
+        ],
+        "name": "sub1",
+        "CHILD_ACCOUNT.0": {
+            "plan": [
+                {
+                    "state": "AVAILABLE",
+                    "targetDate": "2025-02-24T16:25:16"
+                },
+                {
+                    "state": "REVIEWED",
+                    "targetDate": "2025-02-27T16:25:16"
+                }
             ],
-            "properties": {
-                "foo": "bar"
+            "name": "sub11",
+            "YEARLY_TRANSACTIONS": {
+                "plan": [
+                    {
+                        "state": "AVAILABLE",
+                        "targetDate": "2025-02-17T16:25:16"
+                    },
+                    {
+                        "state": "REVIEWED",
+                        "targetDate": "2025-02-18T16:25:16"
+                    }
+                ]
             },
-            "status": -1.0,
-            "childStatusWeights": {},
-            "docType": {
-                "type": "UNDEF",
-                "description": ""
-            },
-            "nodeType": "DocNode"
+            "YEAR_END_TAX_DOC": {
+                "plan": [
+                    {
+                        "state": "AVAILABLE",
+                        "targetDate": "2025-01-17T16:25:16"
+                    },
+                    {
+                        "state": "REVIEWED",
+                        "targetDate": "2025-01-18T16:25:16"
+                    }
+                ]
+            }
+        },
+        "YEAR_END_TAX_DOC.0": {
+            "plan": [
+                {
+                    "state": "AVAILABLE",
+                    "targetDate": "2025-01-17T16:25:16"
+                },
+                {
+                    "state": "REVIEWED",
+                    "targetDate": "2025-01-18T16:25:16"
+                }
+            ],
+            "status": [
+                {
+                    "state": "AVAILABLE",
+                    "targetDate": "2025-02-18T16:25:16"
+                }
+            ],
+            "name": "Steuerbescheinigung.pdf"
         }
-    ],
-    "updates": [
-        {
-            "when": "2025-02-17T11:11:32.798669+00:00",
-            "who": {
-                "name": "frankar",
-                "role": "PV"
+    },
+    "ACCOUNT.1": {
+        "plan": [
+            {
+                "state": "AVAILABLE",
+                "targetDate": "2025-01-17T16:25:16"
             },
-            "description": {
-                "description": "[create] child [NodeType.DOC]/[PV_TreeHelper_DocNode_5832d613-18df-4ff6-b28b-e5217c7a65e3]."
-            },
-            "kind": 1
+            {
+                "state": "REVIEWED",
+                "targetDate": "2025-01-18T16:25:16"
+            }
+        ],
+        "status": [
+            {
+                "state": "AVAILABLE",
+                "targetDate": "2025-02-18T16:25:16"
+            }
+        ],
+        "name": "sub2",
+        "YEARLY_TRANSACTIONS": {
+            "plan": [
+                {
+                    "state": "AVAILABLE",
+                    "targetDate": "2025-02-17T16:25:16"
+                },
+                {
+                    "state": "REVIEWED",
+                    "targetDate": "2025-02-18T16:25:16"
+                }
+            ]
+        },
+        "YEAR_END_TAX_DOC": {
+            "plan": [
+                {
+                    "state": "AVAILABLE",
+                    "targetDate": "2025-01-17T16:25:16"
+                },
+                {
+                    "state": "REVIEWED",
+                    "targetDate": "2025-01-18T16:25:16"
+                }
+            ],
+            "status": [
+                {
+                    "state": "AVAILABLE",
+                    "targetDate": "2025-02-18T16:25:16"
+                }
+            ],
+            "name": "jstb_2025-01-21-5997937.pdf"
         }
-    ],
-    "testIntList": [
-        1,
-        43,
-        5
-    ],
-    "properties": {
-        "foo": "bar"
-    },
-    "status": -1.0,
-    "childStatusWeights": {
-        "48ca6d23-f500-4ca6-b133-d6596dd5db85": 13
-    },
-    "nodeType": "ProjectNode"
-}'
+    }
+}
