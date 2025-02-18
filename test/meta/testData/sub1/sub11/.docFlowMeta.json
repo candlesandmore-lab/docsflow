@@ -6,13 +6,9 @@
         ]
     },
     "YEAR_END_TAX_DOC" : {
-        "name" : "jstb_2025-01-21-5997937.pdf",
         "plan" : [
             ["AVAILABLE", "2025-01-17T16:25:16"],
             ["REVIEWED", "2025-01-18T16:25:16"]
-        ],
-        "status" : [
-            ["AVAILABLE", "2025-02-18T16:25:16"]
         ]
     }
 }

@@ -1,16 +1,15 @@
-from enum import Enum
 
-
-__DEPRECATED_ContextType : list[str] = [
+ContextType : list[str] = [
     "ACCOUNT",
-    "IMMOBILIE"
-    "ARBEIT"
+    "IMMOBILIE",
+    "ARBEIT",
     "TRADING"
 ]
    
-class __DEPRECATED_DocType(str, Enum):
-    YEARLY_TRANSACTIONS = "YEARLY_TRANSACTIONS"
-    YEAR_END_TAX_DOC = "YEAR_END_TAX_DOC"
-    GRUNDSTEUERBESCHEID = "GRUNDSTEUERBESCHEID"
-    RECHNUNG = "RECHNUNG"
-    YEAR_END_GAIN_LOSS_DOC = "YEAR_END_GAIN_LOSS_DOC"
+DocType: list[str] = [
+    "YEARLY_TRANSACTIONS",
+    "YEAR_END_TAX_DOC",
+    "GRUNDSTEUERBESCHEID",
+    "RECHNUNG",
+    "YEAR_END_GAIN_LOSS_DOC"
+]

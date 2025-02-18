@@ -1,5 +1,6 @@
 import json
 from python.elements.streamableItem import StreamableItem
+from python.infra.jsonStuff import getFieldSave
 
 
 class DocFlowNodeType(StreamableItem):
@@ -14,10 +15,17 @@ class DocFlowNodeType(StreamableItem):
         ) -> None :
         
         _from_json_dict = json.loads(jsonString)
-        
-        self.type = _from_json_dict['type']
-        self.description = _from_json_dict['description']
 
+        self.fromDict(_from_json_dict)
+
+    def fromDict(
+            self,
+            _from_json_dict : dict
+        ) -> None :
+
+        overwrite, self.type = getFieldSave(_from_json_dict, 'type', self.type)
+        overwrite, self.description = getFieldSave(_from_json_dict, 'description', self.description)
+        
 class DocNodeType(DocFlowNodeType):
     def __init__(self, type : str = "UNDEF", description : str = ""):
         super().__init__(type, description)

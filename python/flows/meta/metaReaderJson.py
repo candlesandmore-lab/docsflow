@@ -5,22 +5,27 @@
 import json
 import os
 from python.elements.datetimeItem import DatetimeItem
+from python.elements.streamableItem import StreamableDict, StreamableItem, StreamableList
+from python.flows.docsFlow.docFlowNodeTypes import DocFlowNodeType
+from python.infra.jsonStuff import getFieldSave, updateFieldIfValueNotNone
 from python.infra.logging import getMainLogger
 from python.infra.timeStampMeta import utcDateTimeFromIsoString
 
 
-class MetaReaderJson():
+class MetaReaderJson(StreamableItem):
     def __init__(self) -> None:
+        super().__init__()
         self.logger = getMainLogger()
+        self.packIgnoreProperties.append("logger")
 
     def importFolderMetadata(
             self,
             folder : str
-    ) -> tuple[bool, dict]:
+    ) -> tuple[bool, StreamableDict]:
         
         success = True
-        metaTree : dict = {}
-        
+        metaTree = StreamableDict()
+
         if not os.path.isdir(folder):
             self.logger.error("Folder [{}] is not accessible.".format(
                 folder
@@ -53,8 +58,8 @@ class MetaReaderJson():
 
         return success, metaTree
 
-    def __importItemMeta(self, contextMetaDict : dict) -> tuple[bool, dict]:
-        result : dict = {}
+    def __importItemMeta(self, contextMetaDict : dict) -> tuple[bool, StreamableDict]:
+        result = StreamableDict()
         success = True
 
         if 'plan' in contextMetaDict.keys():
@@ -62,25 +67,32 @@ class MetaReaderJson():
         
         if success and 'status' in contextMetaDict.keys():
             success, result['status'] = self.__importMetaStatusList(contextMetaDict['status'])
+
+        # node meta properties
+        nodeTypeInfo = DocFlowNodeType()
+        nodeTypeInfo.fromDict(contextMetaDict)
+        result['nodeType'] = nodeTypeInfo
+
+        fieldExists, metaName = getFieldSave(contextMetaDict, 'name', None)
+        updateFieldIfValueNotNone(result, 'name', metaName)
         
         return success, result
     
-    def __importMetaStatusList(self, metaStatusList : list) -> tuple[bool, list]:
-        result : list = []
+    def __importMetaStatusList(self, metaStatusList : list) -> tuple[bool, StreamableList]:
+        result = StreamableList()
         success = True
 
         if not (metaStatusList, list):
             success = False
         else:
             for metaData in metaStatusList:
-                targetState = metaData[0]
-                targetDate = DatetimeItem(utcDateTimeFromIsoString(metaData[1]))
-                    
+                streamableDict = StreamableDict() 
+
+                streamableDict['state'] = metaData[0]
+                streamableDict['targetDate'] = DatetimeItem(utcDateTimeFromIsoString(metaData[1]))
+                 
                 result.append(
-                    {
-                        'state':targetState,
-                        'targetDate' : targetDate
-                    }
+                   streamableDict
                 )
 
         return success, result

@@ -1,12 +1,13 @@
 {
-    "YEARLY_TRANSACTIONS" : {
+    "ACCOUNT.0" : {
+        "name" : "sub1",
         "plan" : [
-            ["AVAILABLE", "2025-02-17T16:25:16"],
-            ["REVIEWED", "2025-02-18T16:25:16"]
+            ["AVAILABLE", "2025-02-24T16:25:16"],
+            ["REVIEWED", "2025-02-27T16:25:16"]
         ]
     },
-    "YEAR_END_TAX_DOC" : {
-        "name" : "jstb_2025-01-21-5997937.pdf",
+    "ACCOUNT.1" : {
+        "name" : "sub2",
         "plan" : [
             ["AVAILABLE", "2025-01-17T16:25:16"],
             ["REVIEWED", "2025-01-18T16:25:16"]

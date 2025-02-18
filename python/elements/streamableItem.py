@@ -1,7 +1,7 @@
 
 
 import json
-from typing import List, Optional
+from typing import Any, List, Optional
 
 
 class StreamableItem():
@@ -14,8 +14,9 @@ class StreamableItem():
 
         for key in self.__dict__:
             if key not in self.packIgnoreProperties:
-                
-                if isinstance(self.__getattribute__(key), List):
+                if isinstance(self.__getattribute__(key), StreamableList):
+                    resultDict[key] = self.__getattribute__(key).toList()
+                elif isinstance(self.__getattribute__(key), List):
                     if len( self.__getattribute__(key)) == 0:
                         resultDict[key] = self.__getattribute__(key)
                     else:
@@ -51,8 +52,41 @@ class StreamableItem():
         ) -> None :
         pass
     
+class StreamableList(list, StreamableItem):
+    def __init__(self):
+        super().__init__()
+        
+    def toList(self) -> List:
+        resultList : list[Any]= []
+        
+        if len(self) > 0:
+            for item in self:
+                # support list of StreamableItem or base type, no arbitrary objects
+                if isinstance(item, StreamableList):
+                    resultList.append(item.toList())
+                elif isinstance(item, StreamableItem):
+                    resultList.append(item.toDict())
+                else:
+                    resultList.append(item)
+                    
+        return resultList        
+class StreamableDict(dict, StreamableItem):
+    def __init__(self):
+        super().__init__()
 
-
+    def toDict(self) -> dict:
+        resultDict = {}
+        
+        for dictKey in self.keys():
+            print(".{}".format(dictKey))
+            if isinstance(self[dictKey], StreamableList):
+                resultDict[dictKey] = self[dictKey].toList()
+            elif isinstance(self[dictKey], StreamableItem):
+                resultDict[dictKey] = self[dictKey].toDict()
+            else:
+                resultDict[dictKey] = self[dictKey]
+        
+        return resultDict
 '''
 # ++++ TODO ++++ FIX this stuff, to stream properties with timestamps
 elif isinstance(self.__getattribute__(key), dict):
