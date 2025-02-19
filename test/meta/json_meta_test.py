@@ -5,11 +5,13 @@ import json
 import unittest
 
 from python.data.docFlowNodeFactory import DocFlowNodeFactory
-from python.elements.baseNode import NodeReturnValue
+from python.elements.baseNode import BaseNode, NodeReturnValue
 from python.elements.streamableItem import StreamableDict, StreamableList
 from python.elements.userItem import UserItem
 from python.flows.meta.metaReaderJson import MetaReaderJson
 from python.flows.ui.json.projectJsonUI import ProjectJsonUI
+from test.elements.tree_test import PV_TreeHelper
+from test.factory.baseFactory_test import TestFactory
 from test.flows.docsFlow.project_test import PV_ProjectHelper
 
 class TestJsonMeta(unittest.TestCase):
@@ -41,17 +43,16 @@ class TestJsonMeta(unittest.TestCase):
         print(json.dumps(metaFromDir.toDict(), indent=4))
         print(metaFromDir.toJson())
 
-        self.assertEqual(1, 1)  # a == b
-
-    def test_importProjectWithMetaData(self):
+    def test_importProjectWithMetaData(self) -> BaseNode:
         projectDir = r'C:\Users\Frank\SynologyDrive\Drive\LaptopOnly\github\docsflow\test\meta\testData'
         projectHelper = PV_ProjectHelper(
             path = projectDir
         )
         self.assertEqual(projectHelper.importStatus, NodeReturnValue.OK)
-        projectDict = projectHelper.getProjectNode().toDict()
-        print(projectDict)
 
+        #projectDict = projectHelper.getProjectNode().toDict()
+        #print(projectDict)
+   
         user = UserItem(
             name="FrankA",
             role="Steuerpflichtiger"
@@ -66,7 +67,7 @@ class TestJsonMeta(unittest.TestCase):
             metaDir=projectDir
         )
 
-        ui.mergeMetaData()
+        self.assertTrue(ui.isFunctional())
         
         r = ui.project.toDict()
 
@@ -75,6 +76,19 @@ class TestJsonMeta(unittest.TestCase):
         )
         with open(testResult, 'w', encoding='utf-8') as f:
             json.dump(r, f, ensure_ascii=False, indent=4)
+
+        return ui.project
+    
+    def test_storeAndReadProjectWithMetaData(self):
+        projectNode = self.test_importProjectWithMetaData()
+        # 'create' 2nd node for sub-test
+        treeHelper = PV_TreeHelper()
+        node2 = treeHelper.getProjectDocHierNode()
+
+        baseFactoryTest = TestFactory()
+        baseFactoryTest.createInsertGetUpdate2Nodes(projectNode, node2)
+
+        # TODO: implement and test status based on plan/status for nodes and roll up
 
 if __name__.__contains__("__main__"):
     unittest.main()

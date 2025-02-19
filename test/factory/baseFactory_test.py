@@ -6,7 +6,7 @@ import unittest
 from python.data.docFlowNodeFactory import DocFlowNodeFactory
 from python.data.mongoDBHandler import mdbhReturnValue
 from python.data.mongoDBFactory import MongoDBFactory, dffReturnValue
-from python.elements.baseNode import NodeType
+from python.elements.baseNode import BaseNode, NodeType
 from python.elements.userItem import UserItem
 from python.flows.docsFlow.contextNode import ContextNode
 from test.data.mongodb_test import PV_MongoHelper
@@ -83,7 +83,9 @@ class TestFactory(unittest.TestCase):
         treeHelper = PV_TreeHelper()
         node1 = treeHelper.getProjectDocHierNode()
         node2 = treeHelper.getProjectDocHierNode()
+        self.createInsertGetUpdate2Nodes(node1, node2)
 
+    def createInsertGetUpdate2Nodes(self, node1 : BaseNode, node2 : BaseNode):
         dbHelper = PV_MongoHelper()
         mdbhRetValue, dbHandler = dbHelper.init_DBHandler()
         self.assertEqual(mdbhRetValue, mdbhReturnValue.OK)

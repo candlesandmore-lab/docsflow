@@ -1,6 +1,7 @@
 {
     "ACCOUNT.0" : {
         "name" : "sub1",
+        "type" : "ContextNode",
         "plan" : [
             ["AVAILABLE", "2025-02-24T16:25:16"],
             ["REVIEWED", "2025-02-27T16:25:16"]
@@ -8,6 +9,7 @@
     },
     "ACCOUNT.1" : {
         "name" : "sub2",
+        "type" : "ContextNode",
         "plan" : [
             ["AVAILABLE", "2025-01-17T16:25:16"],
             ["REVIEWED", "2025-01-18T16:25:16"]

@@ -1,5 +1,6 @@
 {
     "CHILD_ACCOUNT.0" : {
+        "type" : "ContextNode",
         "name" : "sub11",
         "plan" : [
             ["AVAILABLE", "2025-02-24T16:25:16"],
@@ -7,6 +8,7 @@
         ]
     },
     "YEAR_END_TAX_DOC.0" : {
+        "type" : "DocNode",
         "name" : "Steuerbescheinigung.pdf",
         "plan" : [
             ["AVAILABLE", "2025-01-17T16:25:16"],

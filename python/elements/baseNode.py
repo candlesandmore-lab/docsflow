@@ -103,7 +103,7 @@ class BaseNode(StreamableItem):
         self.name = _from_json_dict['name']
         self.uuid = _from_json_dict['uuid']
         self.nodeType = NodeType(_from_json_dict['nodeType'])
-        self.testIntList = _from_json_dict['testIntList']
+        #self.testIntList = _from_json_dict['testIntList']
         
         # iterate over tree
         for childDict in _from_json_dict['childs']:
@@ -136,11 +136,18 @@ class BaseNode(StreamableItem):
             key : str, 
             value : Any,
             user : UserItem) -> None:
+        
+        # ensure update messages are streamable
+        if isinstance(value, StreamableItem):
+            valueInMsg = value.toDict()
+        else:
+            valueInMsg = value
+
         updMsg = "User [{}] updated project [{}] property [{}] to [{}].".format(
             user.toDict(),
             self.name,
             key,
-            value
+            valueInMsg
         )
         self.properties[key] = value
         

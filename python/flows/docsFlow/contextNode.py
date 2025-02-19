@@ -72,7 +72,7 @@ class ContextNode(BaseNodeWithStatus):
 
         return retValue
         
-
+    # TODO: provide ignore file pattern, to streamline e.g. JSON meta data flow. We don't want this file in BL data
     def importFolderContent(
             self,
             folder : str,

@@ -92,6 +92,15 @@ class MetaReaderJson(StreamableItem):
         fieldExists, metaName = getFieldSave(contextMetaDict, 'name', None)
         updateFieldIfValueNotNone(result, 'name', metaName)
         
+        fieldExists, metaNodeType = getFieldSave(contextMetaDict, 'type', None)
+        if not fieldExists:
+            success = False
+            self.logger.error("Found meta-data for a node with specifying node type - {}.".format(
+                contextMetaDict
+            ))
+        else:
+            updateFieldIfValueNotNone(result, 'type', metaNodeType)
+
         return success, result
     
     def __importMetaStatusList(self, metaStatusList : list) -> tuple[bool, StreamableList]:

@@ -7,6 +7,7 @@ from python.elements.streamableItem import StreamableDict
 from python.elements.userItem import UserItem
 from python.flows.docsFlow.projectNode import ProjectNode
 from python.flows.meta.metaReaderJson import MetaReaderJson
+from python.infra.jsonStuff import getFieldSave
 from python.infra.logging import getMainLogger
 
 
@@ -26,7 +27,10 @@ class ProjectJsonUI():
         self.metaDir = metaDir
 
         self.importMetaData()
-        self.mergeMetaData()
+        self.mergedData = self.mergeMetaData()
+
+    def isFunctional(self):
+        return self.mergeMetaData
     
     #
     # - match metadata by name, which should work for
@@ -34,11 +38,14 @@ class ProjectJsonUI():
     # IFF there is no match, we have meta-data for file/folders that do not exist yet and for which the name is not defined yet
     #   - this should not happen in a proper UI
     #   - it is a flaw of the disk based UI
-    def mergeMetaData(self):
+    def mergeMetaData(self) -> bool:
+    
         mergedMeta = self.mergeContextMetaData(self.project, self.metaFromDir, ".")
         if not mergedMeta:
             self.logger.warning("Unable to merge any meta-data into the project tree.")
-            
+    
+        return mergedMeta
+    
     def mergeContextMetaData(self, node : BaseNode, metaDict : StreamableDict, hier : str) -> bool:
         mergedData = False
 
@@ -51,6 +58,22 @@ class ProjectJsonUI():
             if not isinstance(metaDict[metaKey], dict):
                 #  for now, just add the plan and status
                 propertyMetaDict['meta'][metaKey] = metaDict[metaKey]
+                # checks
+                fieldExists, metaNodeType = getFieldSave(metaDict, 'type', None)
+                if not fieldExists:
+                    self.logger.error("Meta data has no node 'type' property, abort - {}.".format(
+                        metaDict
+                    ))
+                    mergedData = False
+                    break
+                elif not self.docNodeFactory.testNodeType(node, metaNodeType):
+                    self.logger.error("Meta data 'type' ({}] mismatch with internal data node type ({}], abort meta data application.".format(
+                        metaNodeType,
+                        type(node)
+                    ))
+                    mergedData = False
+                    break
+
             else:
                 if 'name' not in metaDict[metaKey].keys():
                     # cannot match

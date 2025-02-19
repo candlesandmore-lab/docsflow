@@ -1,23 +1,17 @@
 {
     "name": "PV_projectForConstructionTest",
-    "uuid": "6cbb43bd-f425-421b-ba46-5a7e2cff407c",
+    "uuid": "7c701549-0ea2-4d9f-9f5f-cc7e56b938ae",
     "childs": [
         {
             "name": ".docFlowMeta.json",
-            "uuid": "2d3037e9-6dd7-453b-ac00-5050b1332439",
+            "uuid": "cb5212b0-d8d7-4dc5-b8b3-a435586f0b42",
             "childs": [],
             "updates": [],
-            "testIntList": [
-                1,
-                43,
-                5
-            ],
             "properties": {
-                "foo": "bar",
                 "docPath": "C:\\Users\\Frank\\SynologyDrive\\Drive\\LaptopOnly\\github\\docsflow\\test\\meta\\testData\\.docFlowMeta.json",
-                "size": 459,
+                "size": 525,
                 "owner": 0,
-                "mupdateTime": "2025-02-18T16:20:22.737794+00:00",
+                "mupdateTime": "2025-02-19T13:25:27.972383+00:00",
                 "createTime": "2025-02-18T11:24:19.349269+00:00"
             },
             "status": -1.0,
@@ -30,24 +24,18 @@
         },
         {
             "name": "sub1",
-            "uuid": "3d72668e-567a-4c8e-8e17-db1ef4d0db40",
+            "uuid": "9a0d87cf-2a0c-48ae-bb13-1918257c5c22",
             "childs": [
                 {
                     "name": ".docFlowMeta.json",
-                    "uuid": "216c8e7b-231a-4d15-95da-c361f0651ac6",
+                    "uuid": "4e75eea7-aa3b-4e5a-bda7-92ab62515911",
                     "childs": [],
                     "updates": [],
-                    "testIntList": [
-                        1,
-                        43,
-                        5
-                    ],
                     "properties": {
-                        "foo": "bar",
                         "docPath": "C:\\Users\\Frank\\SynologyDrive\\Drive\\LaptopOnly\\github\\docsflow\\test\\meta\\testData\\sub1\\.docFlowMeta.json",
-                        "size": 494,
+                        "size": 556,
                         "owner": 0,
-                        "mupdateTime": "2025-02-18T11:30:04.638001+00:00",
+                        "mupdateTime": "2025-02-19T13:26:04.705752+00:00",
                         "createTime": "2025-02-18T11:26:01.415831+00:00"
                     },
                     "status": -1.0,
@@ -60,39 +48,22 @@
                 },
                 {
                     "name": "Steuerbescheinigung.pdf",
-                    "uuid": "39059085-da5a-4f67-b109-9ca8054d73e1",
+                    "uuid": "207f8a78-8889-4928-900e-ac5d9487ebfd",
                     "childs": [],
                     "updates": [
                         {
-                            "when": "2025-02-18T16:33:01.676315+00:00",
+                            "when": "2025-02-19T14:58:38.556841+00:00",
                             "who": {
                                 "name": "FrankA",
                                 "role": "Steuerpflichtiger"
                             },
                             "description": {
-                                "description": "User [{'name': 'FrankA', 'role': 'Steuerpflichtiger'}] updated project [Steuerbescheinigung.pdf] property [meta] to [{'plan': [{'state': 'AVAILABLE', 'targetDate': <python.elements.datetimeItem.DatetimeItem object at 0x00000121D16F16D0>}, {'state': 'REVIEWED', 'targetDate': <python.elements.datetimeItem.DatetimeItem object at 0x00000121D16F1730>}], 'status': [{'state': 'AVAILABLE', 'targetDate': <python.elements.datetimeItem.DatetimeItem object at 0x00000121D16F1790>}], 'name': 'Steuerbescheinigung.pdf'}]."
-                            },
-                            "kind": 1
-                        },
-                        {
-                            "when": "2025-02-18T16:33:01.678309+00:00",
-                            "who": {
-                                "name": "FrankA",
-                                "role": "Steuerpflichtiger"
-                            },
-                            "description": {
-                                "description": "User [{'name': 'FrankA', 'role': 'Steuerpflichtiger'}] updated project [Steuerbescheinigung.pdf] property [meta] to [{'plan': [{'state': 'AVAILABLE', 'targetDate': <python.elements.datetimeItem.DatetimeItem object at 0x00000121D16F16D0>}, {'state': 'REVIEWED', 'targetDate': <python.elements.datetimeItem.DatetimeItem object at 0x00000121D16F1730>}], 'status': [{'state': 'AVAILABLE', 'targetDate': <python.elements.datetimeItem.DatetimeItem object at 0x00000121D16F1790>}], 'name': 'Steuerbescheinigung.pdf'}]."
+                                "description": "User [{'name': 'FrankA', 'role': 'Steuerpflichtiger'}] updated project [Steuerbescheinigung.pdf] property [meta] to [{'plan': [{'state': 'AVAILABLE', 'targetDate': '2025-01-17T16:25:16'}, {'state': 'REVIEWED', 'targetDate': '2025-01-18T16:25:16'}], 'status': [{'state': 'AVAILABLE', 'targetDate': '2025-02-18T16:25:16'}], 'name': 'Steuerbescheinigung.pdf', 'type': 'DocNode'}]."
                             },
                             "kind": 1
                         }
                     ],
-                    "testIntList": [
-                        1,
-                        43,
-                        5
-                    ],
                     "properties": {
-                        "foo": "bar",
                         "docPath": "C:\\Users\\Frank\\SynologyDrive\\Drive\\LaptopOnly\\github\\docsflow\\test\\meta\\testData\\sub1\\Steuerbescheinigung.pdf",
                         "size": 32576,
                         "owner": 0,
@@ -115,7 +86,8 @@
                                     "targetDate": "2025-02-18T16:25:16"
                                 }
                             ],
-                            "name": "Steuerbescheinigung.pdf"
+                            "name": "Steuerbescheinigung.pdf",
+                            "type": "DocNode"
                         }
                     },
                     "status": -1.0,
@@ -128,24 +100,18 @@
                 },
                 {
                     "name": "sub11",
-                    "uuid": "7baa56c3-d1c9-4785-a540-42dc4a3e9a15",
+                    "uuid": "254e880c-9940-4892-b9c4-737d0a56b0cc",
                     "childs": [
                         {
                             "name": ".docFlowMeta.json",
-                            "uuid": "60bea968-5f3a-4f4c-873d-8b1159590b30",
+                            "uuid": "fce5c1dc-b4d7-45e2-b242-2de5e6238b9f",
                             "childs": [],
                             "updates": [],
-                            "testIntList": [
-                                1,
-                                43,
-                                5
-                            ],
                             "properties": {
-                                "foo": "bar",
                                 "docPath": "C:\\Users\\Frank\\SynologyDrive\\Drive\\LaptopOnly\\github\\docsflow\\test\\meta\\testData\\sub1\\sub11\\.docFlowMeta.json",
-                                "size": 340,
+                                "size": 398,
                                 "owner": 0,
-                                "mupdateTime": "2025-02-18T11:29:00.168288+00:00",
+                                "mupdateTime": "2025-02-19T13:26:15.099789+00:00",
                                 "createTime": "2025-02-18T11:27:57.344172+00:00"
                             },
                             "status": -1.0,
@@ -159,7 +125,7 @@
                     ],
                     "updates": [
                         {
-                            "when": "2025-02-18T16:33:01.671704+00:00",
+                            "when": "2025-02-19T14:58:38.539889+00:00",
                             "who": {
                                 "name": "PV_testcase__project_test",
                                 "role": "TESTER"
@@ -170,35 +136,18 @@
                             "kind": 1
                         },
                         {
-                            "when": "2025-02-18T16:33:01.676315+00:00",
+                            "when": "2025-02-19T14:58:38.554849+00:00",
                             "who": {
                                 "name": "FrankA",
                                 "role": "Steuerpflichtiger"
                             },
                             "description": {
-                                "description": "User [{'name': 'FrankA', 'role': 'Steuerpflichtiger'}] updated project [sub11] property [meta] to [{'plan': [{'state': 'AVAILABLE', 'targetDate': <python.elements.datetimeItem.DatetimeItem object at 0x00000121D16F1610>}, {'state': 'REVIEWED', 'targetDate': <python.elements.datetimeItem.DatetimeItem object at 0x00000121D16F1670>}], 'name': 'sub11'}]."
-                            },
-                            "kind": 1
-                        },
-                        {
-                            "when": "2025-02-18T16:33:01.677314+00:00",
-                            "who": {
-                                "name": "FrankA",
-                                "role": "Steuerpflichtiger"
-                            },
-                            "description": {
-                                "description": "User [{'name': 'FrankA', 'role': 'Steuerpflichtiger'}] updated project [sub11] property [meta] to [{'plan': [{'state': 'AVAILABLE', 'targetDate': <python.elements.datetimeItem.DatetimeItem object at 0x00000121D16F1610>}, {'state': 'REVIEWED', 'targetDate': <python.elements.datetimeItem.DatetimeItem object at 0x00000121D16F1670>}], 'name': 'sub11'}]."
+                                "description": "User [{'name': 'FrankA', 'role': 'Steuerpflichtiger'}] updated project [sub11] property [meta] to [{'plan': [{'state': 'AVAILABLE', 'targetDate': '2025-02-24T16:25:16'}, {'state': 'REVIEWED', 'targetDate': '2025-02-27T16:25:16'}], 'name': 'sub11', 'type': 'ContextNode'}]."
                             },
                             "kind": 1
                         }
                     ],
-                    "testIntList": [
-                        1,
-                        43,
-                        5
-                    ],
                     "properties": {
-                        "foo": "bar",
                         "contextPath": "C:\\Users\\Frank\\SynologyDrive\\Drive\\LaptopOnly\\github\\docsflow\\test\\meta\\testData\\sub1\\sub11",
                         "size": 0,
                         "owner": 0,
@@ -215,12 +164,13 @@
                                     "targetDate": "2025-02-27T16:25:16"
                                 }
                             ],
-                            "name": "sub11"
+                            "name": "sub11",
+                            "type": "ContextNode"
                         }
                     },
                     "status": -1.0,
                     "childStatusWeights": {
-                        "60bea968-5f3a-4f4c-873d-8b1159590b30": 13
+                        "fce5c1dc-b4d7-45e2-b242-2de5e6238b9f": 13
                     },
                     "contextType": {
                         "type": "UNDEF",
@@ -231,7 +181,7 @@
             ],
             "updates": [
                 {
-                    "when": "2025-02-18T16:33:01.669339+00:00",
+                    "when": "2025-02-19T14:58:38.537892+00:00",
                     "who": {
                         "name": "PV_testcase__project_test",
                         "role": "TESTER"
@@ -242,7 +192,7 @@
                     "kind": 1
                 },
                 {
-                    "when": "2025-02-18T16:33:01.670349+00:00",
+                    "when": "2025-02-19T14:58:38.538890+00:00",
                     "who": {
                         "name": "PV_testcase__project_test",
                         "role": "TESTER"
@@ -253,7 +203,7 @@
                     "kind": 1
                 },
                 {
-                    "when": "2025-02-18T16:33:01.670349+00:00",
+                    "when": "2025-02-19T14:58:38.538890+00:00",
                     "who": {
                         "name": "PV_testcase__project_test",
                         "role": "TESTER"
@@ -264,35 +214,18 @@
                     "kind": 1
                 },
                 {
-                    "when": "2025-02-18T16:33:01.677314+00:00",
+                    "when": "2025-02-19T14:58:38.556841+00:00",
                     "who": {
                         "name": "FrankA",
                         "role": "Steuerpflichtiger"
                     },
                     "description": {
-                        "description": "User [{'name': 'FrankA', 'role': 'Steuerpflichtiger'}] updated project [sub1] property [meta] to [{'plan': [{'state': 'AVAILABLE', 'targetDate': <python.elements.datetimeItem.DatetimeItem object at 0x00000121D16F1280>}, {'state': 'REVIEWED', 'targetDate': <python.elements.datetimeItem.DatetimeItem object at 0x00000121D16F12E0>}], 'name': 'sub1'}]."
-                    },
-                    "kind": 1
-                },
-                {
-                    "when": "2025-02-18T16:33:01.678309+00:00",
-                    "who": {
-                        "name": "FrankA",
-                        "role": "Steuerpflichtiger"
-                    },
-                    "description": {
-                        "description": "User [{'name': 'FrankA', 'role': 'Steuerpflichtiger'}] updated project [sub1] property [meta] to [{'plan': [{'state': 'AVAILABLE', 'targetDate': <python.elements.datetimeItem.DatetimeItem object at 0x00000121D16F1280>}, {'state': 'REVIEWED', 'targetDate': <python.elements.datetimeItem.DatetimeItem object at 0x00000121D16F12E0>}], 'name': 'sub1'}]."
+                        "description": "User [{'name': 'FrankA', 'role': 'Steuerpflichtiger'}] updated project [sub1] property [meta] to [{'plan': [{'state': 'AVAILABLE', 'targetDate': '2025-02-24T16:25:16'}, {'state': 'REVIEWED', 'targetDate': '2025-02-27T16:25:16'}], 'name': 'sub1', 'type': 'ContextNode'}]."
                     },
                     "kind": 1
                 }
             ],
-            "testIntList": [
-                1,
-                43,
-                5
-            ],
             "properties": {
-                "foo": "bar",
                 "contextPath": "C:\\Users\\Frank\\SynologyDrive\\Drive\\LaptopOnly\\github\\docsflow\\test\\meta\\testData\\sub1",
                 "size": 0,
                 "owner": 0,
@@ -309,14 +242,15 @@
                             "targetDate": "2025-02-27T16:25:16"
                         }
                     ],
-                    "name": "sub1"
+                    "name": "sub1",
+                    "type": "ContextNode"
                 }
             },
             "status": -1.0,
             "childStatusWeights": {
-                "216c8e7b-231a-4d15-95da-c361f0651ac6": 13,
-                "39059085-da5a-4f67-b109-9ca8054d73e1": 13,
-                "7baa56c3-d1c9-4785-a540-42dc4a3e9a15": 13
+                "4e75eea7-aa3b-4e5a-bda7-92ab62515911": 13,
+                "207f8a78-8889-4928-900e-ac5d9487ebfd": 13,
+                "254e880c-9940-4892-b9c4-737d0a56b0cc": 13
             },
             "contextType": {
                 "type": "UNDEF",
@@ -326,24 +260,18 @@
         },
         {
             "name": "sub2",
-            "uuid": "d25b3f6d-3e8b-4cb5-a42b-ea4b7a18dc01",
+            "uuid": "0d45cf92-d279-4f2f-a356-ac84e8285891",
             "childs": [
                 {
                     "name": ".docFlowMeta.json",
-                    "uuid": "4938db50-9b3d-4ff0-98b4-f4c1538d6d77",
+                    "uuid": "6f502f65-8a12-4402-9ac4-843acb6819de",
                     "childs": [],
                     "updates": [],
-                    "testIntList": [
-                        1,
-                        43,
-                        5
-                    ],
                     "properties": {
-                        "foo": "bar",
                         "docPath": "C:\\Users\\Frank\\SynologyDrive\\Drive\\LaptopOnly\\github\\docsflow\\test\\meta\\testData\\sub2\\.docFlowMeta.json",
-                        "size": 473,
+                        "size": 531,
                         "owner": 0,
-                        "mupdateTime": "2025-02-18T11:24:03.704091+00:00",
+                        "mupdateTime": "2025-02-19T13:25:47.666742+00:00",
                         "createTime": "2025-02-17T16:23:02.668938+00:00"
                     },
                     "status": -1.0,
@@ -356,39 +284,22 @@
                 },
                 {
                     "name": "jstb_2025-01-21-5997937.pdf",
-                    "uuid": "0d51d5c6-fe9b-4d56-b503-58e05e1cc27a",
+                    "uuid": "b9b1e1dc-4fd3-4229-a6c2-a0b87a049ca2",
                     "childs": [],
                     "updates": [
                         {
-                            "when": "2025-02-18T16:33:01.677314+00:00",
+                            "when": "2025-02-19T14:58:38.556841+00:00",
                             "who": {
                                 "name": "FrankA",
                                 "role": "Steuerpflichtiger"
                             },
                             "description": {
-                                "description": "User [{'name': 'FrankA', 'role': 'Steuerpflichtiger'}] updated project [jstb_2025-01-21-5997937.pdf] property [meta] to [{'plan': [{'state': 'AVAILABLE', 'targetDate': <python.elements.datetimeItem.DatetimeItem object at 0x00000121D16F1A30>}, {'state': 'REVIEWED', 'targetDate': <python.elements.datetimeItem.DatetimeItem object at 0x00000121D16F1A60>}], 'status': [{'state': 'AVAILABLE', 'targetDate': <python.elements.datetimeItem.DatetimeItem object at 0x00000121D16F1AF0>}], 'name': 'jstb_2025-01-21-5997937.pdf'}]."
-                            },
-                            "kind": 1
-                        },
-                        {
-                            "when": "2025-02-18T16:33:01.678309+00:00",
-                            "who": {
-                                "name": "FrankA",
-                                "role": "Steuerpflichtiger"
-                            },
-                            "description": {
-                                "description": "User [{'name': 'FrankA', 'role': 'Steuerpflichtiger'}] updated project [jstb_2025-01-21-5997937.pdf] property [meta] to [{'plan': [{'state': 'AVAILABLE', 'targetDate': <python.elements.datetimeItem.DatetimeItem object at 0x00000121D16F1A30>}, {'state': 'REVIEWED', 'targetDate': <python.elements.datetimeItem.DatetimeItem object at 0x00000121D16F1A60>}], 'status': [{'state': 'AVAILABLE', 'targetDate': <python.elements.datetimeItem.DatetimeItem object at 0x00000121D16F1AF0>}], 'name': 'jstb_2025-01-21-5997937.pdf'}]."
+                                "description": "User [{'name': 'FrankA', 'role': 'Steuerpflichtiger'}] updated project [jstb_2025-01-21-5997937.pdf] property [meta] to [{'plan': [{'state': 'AVAILABLE', 'targetDate': '2025-01-17T16:25:16'}, {'state': 'REVIEWED', 'targetDate': '2025-01-18T16:25:16'}], 'status': [{'state': 'AVAILABLE', 'targetDate': '2025-02-18T16:25:16'}], 'name': 'jstb_2025-01-21-5997937.pdf', 'type': 'DocNode'}]."
                             },
                             "kind": 1
                         }
                     ],
-                    "testIntList": [
-                        1,
-                        43,
-                        5
-                    ],
                     "properties": {
-                        "foo": "bar",
                         "docPath": "C:\\Users\\Frank\\SynologyDrive\\Drive\\LaptopOnly\\github\\docsflow\\test\\meta\\testData\\sub2\\jstb_2025-01-21-5997937.pdf",
                         "size": 66405,
                         "owner": 0,
@@ -411,7 +322,8 @@
                                     "targetDate": "2025-02-18T16:25:16"
                                 }
                             ],
-                            "name": "jstb_2025-01-21-5997937.pdf"
+                            "name": "jstb_2025-01-21-5997937.pdf",
+                            "type": "DocNode"
                         }
                     },
                     "status": -1.0,
@@ -425,7 +337,7 @@
             ],
             "updates": [
                 {
-                    "when": "2025-02-18T16:33:01.672328+00:00",
+                    "when": "2025-02-19T14:58:38.546868+00:00",
                     "who": {
                         "name": "PV_testcase__project_test",
                         "role": "TESTER"
@@ -436,7 +348,7 @@
                     "kind": 1
                 },
                 {
-                    "when": "2025-02-18T16:33:01.672328+00:00",
+                    "when": "2025-02-19T14:58:38.546868+00:00",
                     "who": {
                         "name": "PV_testcase__project_test",
                         "role": "TESTER"
@@ -447,35 +359,18 @@
                     "kind": 1
                 },
                 {
-                    "when": "2025-02-18T16:33:01.677314+00:00",
+                    "when": "2025-02-19T14:58:38.557839+00:00",
                     "who": {
                         "name": "FrankA",
                         "role": "Steuerpflichtiger"
                     },
                     "description": {
-                        "description": "User [{'name': 'FrankA', 'role': 'Steuerpflichtiger'}] updated project [sub2] property [meta] to [{'plan': [{'state': 'AVAILABLE', 'targetDate': <python.elements.datetimeItem.DatetimeItem object at 0x00000121D16F1340>}, {'state': 'REVIEWED', 'targetDate': <python.elements.datetimeItem.DatetimeItem object at 0x00000121D16F13A0>}], 'status': [{'state': 'AVAILABLE', 'targetDate': <python.elements.datetimeItem.DatetimeItem object at 0x00000121D16F1400>}], 'name': 'sub2'}]."
-                    },
-                    "kind": 1
-                },
-                {
-                    "when": "2025-02-18T16:33:01.678309+00:00",
-                    "who": {
-                        "name": "FrankA",
-                        "role": "Steuerpflichtiger"
-                    },
-                    "description": {
-                        "description": "User [{'name': 'FrankA', 'role': 'Steuerpflichtiger'}] updated project [sub2] property [meta] to [{'plan': [{'state': 'AVAILABLE', 'targetDate': <python.elements.datetimeItem.DatetimeItem object at 0x00000121D16F1340>}, {'state': 'REVIEWED', 'targetDate': <python.elements.datetimeItem.DatetimeItem object at 0x00000121D16F13A0>}], 'status': [{'state': 'AVAILABLE', 'targetDate': <python.elements.datetimeItem.DatetimeItem object at 0x00000121D16F1400>}], 'name': 'sub2'}]."
+                        "description": "User [{'name': 'FrankA', 'role': 'Steuerpflichtiger'}] updated project [sub2] property [meta] to [{'plan': [{'state': 'AVAILABLE', 'targetDate': '2025-01-17T16:25:16'}, {'state': 'REVIEWED', 'targetDate': '2025-01-18T16:25:16'}], 'status': [{'state': 'AVAILABLE', 'targetDate': '2025-02-18T16:25:16'}], 'name': 'sub2', 'type': 'ContextNode'}]."
                     },
                     "kind": 1
                 }
             ],
-            "testIntList": [
-                1,
-                43,
-                5
-            ],
             "properties": {
-                "foo": "bar",
                 "contextPath": "C:\\Users\\Frank\\SynologyDrive\\Drive\\LaptopOnly\\github\\docsflow\\test\\meta\\testData\\sub2",
                 "size": 0,
                 "owner": 0,
@@ -498,24 +393,45 @@
                             "targetDate": "2025-02-18T16:25:16"
                         }
                     ],
-                    "name": "sub2"
+                    "name": "sub2",
+                    "type": "ContextNode"
                 }
             },
             "status": -1.0,
             "childStatusWeights": {
-                "4938db50-9b3d-4ff0-98b4-f4c1538d6d77": 13,
-                "0d51d5c6-fe9b-4d56-b503-58e05e1cc27a": 13
+                "6f502f65-8a12-4402-9ac4-843acb6819de": 13,
+                "b9b1e1dc-4fd3-4229-a6c2-a0b87a049ca2": 13
             },
             "contextType": {
                 "type": "UNDEF",
                 "description": ""
             },
             "nodeType": "ContextNode"
+        },
+        {
+            "name": "test_importProjectWithMetaData.json",
+            "uuid": "675e60fd-f46b-4859-a534-aae082d06573",
+            "childs": [],
+            "updates": [],
+            "properties": {
+                "docPath": "C:\\Users\\Frank\\SynologyDrive\\Drive\\LaptopOnly\\github\\docsflow\\test\\meta\\testData\\test_importProjectWithMetaData.json",
+                "size": 22462,
+                "owner": 0,
+                "mupdateTime": "2025-02-19T14:58:38.533904+00:00",
+                "createTime": "2025-02-18T16:33:01.680305+00:00"
+            },
+            "status": -1.0,
+            "childStatusWeights": {},
+            "docType": {
+                "type": "UNDEF",
+                "description": ""
+            },
+            "nodeType": "DocNode"
         }
     ],
     "updates": [
         {
-            "when": "2025-02-18T16:33:01.668339+00:00",
+            "when": "2025-02-19T14:58:38.534900+00:00",
             "who": {
                 "name": "PV_testcase__project_test",
                 "role": "TESTER"
@@ -526,7 +442,7 @@
             "kind": 1
         },
         {
-            "when": "2025-02-18T16:33:01.668339+00:00",
+            "when": "2025-02-19T14:58:38.537892+00:00",
             "who": {
                 "name": "PV_testcase__project_test",
                 "role": "TESTER"
@@ -537,7 +453,7 @@
             "kind": 1
         },
         {
-            "when": "2025-02-18T16:33:01.671704+00:00",
+            "when": "2025-02-19T14:58:38.540886+00:00",
             "who": {
                 "name": "PV_testcase__project_test",
                 "role": "TESTER"
@@ -548,18 +464,18 @@
             "kind": 1
         },
         {
-            "when": "2025-02-18T16:33:01.677314+00:00",
+            "when": "2025-02-19T14:58:38.547866+00:00",
             "who": {
-                "name": "FrankA",
-                "role": "Steuerpflichtiger"
+                "name": "PV_testcase__project_test",
+                "role": "TESTER"
             },
             "description": {
-                "description": "User [{'name': 'FrankA', 'role': 'Steuerpflichtiger'}] updated project [PV_projectForConstructionTest] property [meta] to [{}]."
+                "description": "[create] child [NodeType.DOC]/[test_importProjectWithMetaData.json]."
             },
             "kind": 1
         },
         {
-            "when": "2025-02-18T16:33:01.678309+00:00",
+            "when": "2025-02-19T14:58:38.557839+00:00",
             "who": {
                 "name": "FrankA",
                 "role": "Steuerpflichtiger"
@@ -570,21 +486,16 @@
             "kind": 1
         }
     ],
-    "testIntList": [
-        1,
-        43,
-        5
-    ],
     "properties": {
-        "foo": "bar",
         "contextPath": "C:\\Users\\Frank\\SynologyDrive\\Drive\\LaptopOnly\\github\\docsflow\\test\\meta\\testData",
         "meta": {}
     },
     "status": -1.0,
     "childStatusWeights": {
-        "2d3037e9-6dd7-453b-ac00-5050b1332439": 13,
-        "3d72668e-567a-4c8e-8e17-db1ef4d0db40": 13,
-        "d25b3f6d-3e8b-4cb5-a42b-ea4b7a18dc01": 13
+        "cb5212b0-d8d7-4dc5-b8b3-a435586f0b42": 13,
+        "9a0d87cf-2a0c-48ae-bb13-1918257c5c22": 13,
+        "0d45cf92-d279-4f2f-a356-ac84e8285891": 13,
+        "675e60fd-f46b-4859-a534-aae082d06573": 13
     },
     "contextType": {
         "type": "UNDEF",

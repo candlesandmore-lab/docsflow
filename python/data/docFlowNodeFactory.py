@@ -1,3 +1,5 @@
+from pydoc import locate
+import re
 from typing import Any, cast
 from python.data.baseNodeFactory import BaseNodeFactory
 from python.elements.baseNode import BaseNode
@@ -16,6 +18,16 @@ class DocFlowNodeFactory(BaseNodeFactory):
         result = eval(nodeType)("", self)
         result.setNodeType(nodeType)
 
+        return result
+    
+    def testNodeType(self, node, nodeType) -> bool:
+          # full is this, remove some character. <class 'python.flows.docsFlow.projectNode.ProjectNode'>
+        fullTypeString = re.sub("['><']","", str(type(node)))
+        
+        cString = str.split(fullTypeString, ".")[-1]
+
+        result = (nodeType == cString)
+        
         return result
     
     # called by UI
