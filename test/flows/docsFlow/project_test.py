@@ -10,6 +10,7 @@ from python.elements.baseNode import NodeReturnValue, NodeType
 from python.elements.userItem import UserItem
 from python.flows.docsFlow.projectNode import ProjectNode
 from python.flows.status.baseNodeWithState import NodeState
+from python.flows.status.trafficLightState import TrafficLightState, TrafficLightStatusColor
 from test.data.mongodb_test import PV_MongoHelper
 
 class PV_ProjectHelper():
@@ -23,7 +24,8 @@ class PV_ProjectHelper():
             user=UserItem(
                 name="PV_testcase__project_test",
                 role="TESTER"
-            )
+            ),
+            ignoreFiles=[".docFlowMeta.json"]  # test files for input of status and plans
         )        
 
     def getProjectNode(self) -> ProjectNode:
@@ -64,6 +66,18 @@ class TestProjects(unittest.TestCase):
         print("*PV* Project node status is [{}].".format(nextRolledUpStatus))
 
         self.assertGreater(nextRolledUpStatus, rolledUpStatus)
+
+        # calculate traffic light status
+        trafficLightStateWorker = TrafficLightState()
+        trafficLightStateWorker.updateStatus(node=projectNode, path="")
+        print("Top status is [{}].".format(
+            projectNode.getStatus(
+                key=trafficLightStateWorker.id,
+                default=TrafficLightStatusColor.RED
+        )))
+
+
+
 
     def test_createInsertGetRealProject(self):
         projectHelper = PV_ProjectHelper(

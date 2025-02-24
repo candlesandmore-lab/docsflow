@@ -1,13 +1,15 @@
 
+from datetime import datetime
 from enum import Enum
 import json
-from typing import Optional
+from typing import Any, Optional
 
 from python.data.dataFactory import DataFactory
 from python.elements.baseNode import BaseNode, NodeReturnValue
 from python.elements.datetimeItem import DatetimeItem
 from python.elements.userItem import UserItem
 from python.infra.jsonStuff import getFieldSave
+from python.infra.timeStampMeta import utcDateTime
 
 class NodeState(float, Enum):
     UNDEF = -1
@@ -32,6 +34,16 @@ class BaseNodeWithState(BaseNode):
          # uuid of child, weight
         self.childStateWeights : dict[str, NodeStateWeight] = {} # dict with "uuid" : weight
 
+        # hook for status workers, place for status fields that are updated on demand and not stored in DB
+        self.statusProperties : dict = {}  # key:value
+        self.packIgnoreProperties.append('statusProperties')
+
+
+    def getStatus(self, key, default) -> Any:
+        return getFieldSave(self.statusProperties, key, default)
+    
+    def setStatus(self, key, value) -> None:
+        self.statusProperties[key] = value
 
     def fromJson(
             self,
@@ -80,51 +92,67 @@ class BaseNodeWithState(BaseNode):
                 break
 
         # update myself
-        
-        # TODO: plan is optional for state, only relevant for e.g. traffic light status
-        '''
-        fieldExists, childMeta = getFieldSave(self.properties, 'meta', None)
-        if fieldExists:
-            fieldExists, childMetaPlan = getFieldSave(self.properties['meta'], 'plan', None)
-
-        if not fieldExists:
-            self.logger.error("Unable to identify status of [{}] due to missing meta data.".format(
-                path
-            )) 
-            success = False
-        else:
-        '''
-
         # what is meta-data (user input) saying?
-        fieldExists, childMetaState = getFieldSave(self.properties['meta'], 'state', NodeState(NodeState.UNDEF))
-        
-        if len(self.childs) > 0:
+        metaExists, metaDict = getFieldSave(self.properties, 'meta', None)
+        metaState = NodeState.UNDEF
+
+        if metaExists:
+            fieldExists, metaStateList = getFieldSave(metaDict, 'state', None)
+            if fieldExists:
+                # get latest valid state entry
+                latestUpdateTime = utcDateTime(datetime(2000, 1, 1)) # in the past
+                latestStateDict : dict = {}
+                fieldExists = False
+                for stateDict in metaStateList:
+                    if stateDict['targetDate'].when > latestUpdateTime:
+                        latestUpdateTime = stateDict['targetDate'].when
+                        latestStateDict = stateDict
+                        fieldExists = True
+            
+            if fieldExists:
+                # TODO: enum convertion from Meta data
+                if latestStateDict['state'] == 'CLOSED':
+                    metaState = NodeState.CLOSED
+                elif latestStateDict['state'] == 'REVIEWED':
+                    metaState = NodeState.REVIEWED
+                elif latestStateDict['state'] == 'AVAILABLE':
+                    metaState = NodeState.AVAILABLE
+
+        if len(self.childs) == 0:
+            # there is only META state or UNDEF, since node has no childs
+            newState = metaState 
+        else:
             # Roll up state of childs, compare to meta data and set this state accordingly
-            rollUpStatus, newState = self.rolledUpState()
-            if rollUpStatus != NodeReturnValue.OK:
+            rollUpSuccess, rollUpState = self.rolledUpState()
+            if rollUpSuccess != NodeReturnValue.OK:
                 newState = NodeState(NodeState.UNDEF)
                 self.logger.error("Failure during state roll up, set state of node [{}] to [{}].".format(
                     path,
                     newState
                 ))
-            elif newState > childMetaState:
+            elif metaState == NodeState.UNDEF:
+                # no user input, fully auto calculated
+                newState = rollUpState
+            elif rollUpState > metaState:
+                self.logger.error("Failure during state roll up @ [{}], rolled up state [{}] is greater than meta-data set state [{}].".format(
+                    path,
+                    newState,
+                    metaState
+                ))
+                # META wins, it is less and needs user attention
+                newState = metaState
+            elif rollUpState < metaState:
+                # Roll-up wins, it is less and needs user attention
                 self.logger.error("Failure during state roll up @ [{}], rolled up state [{}] is less than meta-data set state [{}].".format(
                     path,
                     newState,
-                    childMetaState
+                    metaState
                 ))
-                # META wins
-                newState = childMetaState
-            elif newState < childMetaState:
-                # Roll-up wins
-                self.logger.error("Failure during state roll up @ [{}], rolled up state [{}] is greate than meta-data set state [{}].".format(
-                    path,
-                    newState,
-                    childMetaState
-                ))      
-        else:
-            # there is only META state or UNDEF, since node has no childs
-            newState = childMetaState
+                newState = rollUpState    
+            else:
+                # meta state and roll up say the same
+                newState = metaState
+            
         
         # Roll-up and Meta are the same
         self.logger.debug("Set state of [{}] to [{}].".format(
@@ -133,9 +161,22 @@ class BaseNodeWithState(BaseNode):
         ))
         self.state = newState
 
-
         return success, self.state
         
+    # TODO: store state ID as enum in metadata
+    def getStateDict(self, stateList : list, state : str) -> tuple[bool, dict]:
+        foundIt : bool = False
+        resultDict : dict = {}
+
+        for stateEntry in stateList:
+            # record with 'state' and 'targetDate' as DatetimeItem class
+            if stateEntry['state'] == state:
+                resultDict = stateEntry
+                foundIt = True
+                break
+
+        return foundIt, resultDict
+
     def addOrUpdateChild(self, 
             child, 
             user : UserItem, 

@@ -77,7 +77,8 @@ class ContextNode(BaseNodeWithState):
     def importFolderContent(
             self,
             folder : str,
-            user : UserItem
+            user : UserItem,
+            ignoreFiles : list[str] = []
     ) -> NodeReturnValue:
         
         retValue = NodeReturnValue.OK
@@ -92,7 +93,7 @@ class ContextNode(BaseNodeWithState):
             # files -> DOC
             for dirEntry in os.listdir(self.properties['contextPath']):
                 fullDirEntryPath = os.path.join(self.properties['contextPath'], dirEntry)
-                if os.path.isfile(fullDirEntryPath):
+                if os.path.isfile(fullDirEntryPath) and (dirEntry not in ignoreFiles):
 
                     newDocNode = self.factory.constructNode(NodeType.DOC)
                     newDocNode.name = dirEntry
@@ -117,7 +118,8 @@ class ContextNode(BaseNodeWithState):
                     # iterate into folder tree
                     newContextNode.importFolderContent(
                         folder=fullDirEntryPath,
-                        user=user
+                        user=user,
+                        ignoreFiles=ignoreFiles
                     )
                 else:
                     self.logger.info("Ignore folder content [{}], it is not a file or folder in [{}].".format(

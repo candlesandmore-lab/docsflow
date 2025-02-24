@@ -9,6 +9,8 @@ from python.elements.baseNode import BaseNode, NodeReturnValue
 from python.elements.streamableItem import StreamableDict, StreamableList
 from python.elements.userItem import UserItem
 from python.flows.meta.metaReaderJson import MetaReaderJson
+from python.flows.status.baseNodeWithState import BaseNodeWithState
+from python.flows.status.trafficLightState import TrafficLightState, TrafficLightStatusColor
 from python.flows.ui.json.projectJsonUI import ProjectJsonUI
 from test.elements.tree_test import PV_TreeHelper
 from test.factory.baseFactory_test import TestFactory
@@ -78,6 +80,27 @@ class TestJsonMeta(unittest.TestCase):
             json.dump(r, f, ensure_ascii=False, indent=4)
 
         return ui.project
+
+    def test_importProjectWithMetaDataTrafficLight(self):
+        projectNode = self.test_importProjectWithMetaData()
+        # map meta data to status
+        self.assertTrue(isinstance(projectNode, BaseNodeWithState))
+
+        success, overallState = projectNode.updateStateWithMetaData(
+            path=""
+        )
+
+        self.assertTrue(success)
+        print("*PV* : top state is [{}].".format(overallState))
+
+        # calculate traffic light status
+        trafficLightStateWorker = TrafficLightState()
+        trafficLightStateWorker.updateStatus(node=projectNode, path="")
+        print("*PV* : top status is [{}].".format(
+            projectNode.getStatus(
+                key=trafficLightStateWorker.id,
+                default=TrafficLightStatusColor.RED
+        )))
     
     def test_storeAndReadProjectWithMetaData(self):
         projectNode = self.test_importProjectWithMetaData()

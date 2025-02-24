@@ -1,9 +1,10 @@
 
 from enum import Enum
 
-from python.elements.baseNode import NodeReturnValue
 from python.flows.status.baseNodeWithState import BaseNodeWithState, NodeState
+from python.infra.jsonStuff import getFieldSave
 from python.infra.logging import getMainLogger
+from python.infra.timeStampMeta import utcDateTime
 
 
 class TrafficLightStatusColor(str, Enum):
@@ -15,99 +16,98 @@ class TrafficLightStatusColor(str, Enum):
 class TrafficLightState():
     def __init__(self):
         self.logger = getMainLogger()
-        pass
+        self.id = "TrafficLight"
     
-
-
-    def statusAsColor(self, status : float) -> tuple[NodeReturnValue, StatusColor]:
-        result : StatusColor
-
-        if abs(status) > 1:
-            retValue = NodeReturnValue.FAILURE
-            self.logger.error("tatus out of boundaries [{}], should be in (-1,1).".format(
-                status
-            ))
-        else:  
-            retValue = NodeReturnValue.OK
-            if status < 0:
-                result = StatusColor.RED
-            elif status < 0.5:
-                result = StatusColor.ORANGE
-            elif status < 1:
-                result = StatusColor.YELLOW
-            else:
-                result = StatusColor.GREEN
-
-        return retValue, result
-
-    # status calculation
-    # check meta.goal and meta.status to identify how ready we are 
-    def updateStateWithMetaData(self, path : str) -> tuple[bool, float]:
+    def updateStatus(self, node : BaseNodeWithState, path : str) -> bool:
         success = True
-        result = NodeState(NodeState.UNDEF)
+        
+        for child in node.childs:
+            childPath = str.join("/", [path, child.name])
 
-        fieldExists, childMeta = getFieldSave(self.properties, 'meta', None)
-        if fieldExists:
-            fieldExists, childMetaPlan = getFieldSave(self.properties['meta'], 'plan', None)
-
-        if not fieldExists:
-            self.logger.error("Unable to identify status of [{}] due to missing meta data.".format(
-                path
-            )) 
-            success = False
-        else:
-            # we got the plan for the child, compare to reality
-            fieldExists, childMetaStatus = getFieldSave(self.properties['meta'], 'state', None)
-            
-            if not fieldExists:
-                newChildStatus = NodeState(NodeState.UNDEF)
+            # iterate in tree
+            if isinstance(child, BaseNodeWithState):
+                success = self.updateStatus(child, childPath)
             else:
-
-                # calculate time until REQUIRED data, if shorter than X -> 
-                '''
-                class NodeStatus(float, Enum):
-                    UNDEF = -1
-                    AVAILABLE = 0
-                    REVIEWED = 0.5
-                    CLOSED = 1
-                '''
-                # TODO: if status.has(CLOSED) -> CLOSED
-                #       elif status.has(REVIEWED) -> REVIEWED
-                #       elif status.has(AVAILALBLE) -> AVAILABLE
-                #       else
-                #           status -> UNDEF
-                #           if goal.has(AVAILABLE): // need time to review
-                #             if time(AVAILABLE) in past or present + 1 WK -> -0.1
-                #             elif time(AVAILABLE) + 1 M -> color = 0.4 TODO create function with input color, output largest possible float
-                #             elif time(AVAILABLE) + 3 M -> color = StatusColor.YELLOW (0.9)
-                #             else color = StatusColor.GREEN (1)
-                #           if goal.has(REVIEWED):
-                #             if time(REVIEWED) in past or present + 1 M -> color = StatusColor.RED
-                #             elif time(REVIEWED) + 3 M -> color = StatusColor.ORANGE
-                #             elif time(REVIEWED) + 6  M -> color = StatusColor.YELLOW
-                #             else color = StatusColor.GREEN
-                #           if goal.has(CLOSED):
-                #             if time(CLOSED) in past or present + 1 M -> color = StatusColor.RED
-                #             elif time(CLOSED) + 3 M -> color = StatusColor.ORANGE
-                #             elif time(CLOSED) + 6  M -> color = StatusColor.YELLOW
-                #             else color = StatusColor.GREEN
-
-            rollUpStatus, newChildStatus, statusColor = self.rolledUpState()
-            if rollUpStatus != NodeReturnValue.OK:
-                newChildStatus = NodeState.UNDEF
-                self.logger.error("Failure during status roll up, set status of node [{}] to [{}].".format(
-                    path,
-                    newChildStatus
+                self.logger.error("Found node [{}] in tree which is not a status node, abort.".format(
+                    childPath
                 ))
+                success = False
+                break
+
+        if success:
+            # plan is optional for state, only relevant for e.g. traffic light status
+            planExists, childMeta = getFieldSave(node.properties, 'meta', None)
+            if planExists:
+                planExists, childMetaPlan = getFieldSave(childMeta, 'plan', None)
+
+            if not planExists:
+                self.logger.error("Unable to identify state plan of [{}] due to missing meta data.".format(
+                    path
+                ))
+
+            if node.state == NodeState.CLOSED:
+                status = TrafficLightStatusColor.GREEN
+            elif node.state >= NodeState.REVIEWED:
+                defaultStatus = TrafficLightStatusColor.YELLOW
+                if not planExists:
+                    status = defaultStatus
+                else:
+                    status = self.calculateStatus(node, childMetaPlan, 'REVIEWED', ['CLOSED'], defaultStatus)
+            elif node.state >= NodeState.AVAILABLE:
+                defaultStatus = TrafficLightStatusColor.ORANGE
+                if not planExists:
+                    status = defaultStatus
+                else:
+                    status = self.calculateStatus(node, childMetaPlan, 'AVAILABLE', ['REVIEWED', 'CLOSED'], defaultStatus)
+            elif node.state >= NodeState.UNDEF:
+                defaultStatus = TrafficLightStatusColor.RED
+                if not planExists:
+                    status = defaultStatus
+                else:
+                    status = self.calculateStatus(node, childMetaPlan, 'UNDEF', ['AVAILABLE', 'REVIEWED', 'CLOSED'], defaultStatus)
+
+        node.setStatus(self.id, status)
+        return success
+
+        
+    def calculateStatus(
+            self,
+            node : BaseNodeWithState, 
+            childMetaPlan, 
+            state : str,
+            nextStates : list, 
+            defaultStatus : TrafficLightStatusColor) -> TrafficLightStatusColor:
+        
+        result = TrafficLightStatusColor.RED
+        
+        # check for this state plan
+        now = utcDateTime()
+        planExists, planItem = node.getStateDict(childMetaPlan, state)
+        if planExists:
+            if now <= planItem['targetDate'].when:
+                result = TrafficLightStatusColor.GREEN
             else:
-                self.logger.debug("Set status of [{}] to {}[{}].".format(
-                    path,
-                    statusColor,
-                    newChildStatus
-                ))
-                
+                result = TrafficLightStatusColor.RED  # post milestone default
 
-        self.state = newChildStatus
+                # no milestone for this state or we passed it, check next states milestones
+                for nextState in nextStates:
+                    planExists, planItem = node.getStateDict(childMetaPlan, nextState)
+                    if planExists:
+                        break
 
+                if planExists:
+                    # check for next milestone time
+                    print((planItem['targetDate'].when - now).total_seconds())
+                    diffWeeks = (planItem['targetDate'].when - now).total_seconds() / (60 * 60 * 24 * 7)
+                    
+                    # TODO: find user defined buffer times
+                    if diffWeeks >= 8:
+                        result = TrafficLightStatusColor.GREEN
+                    elif diffWeeks >= 4:
+                        result = TrafficLightStatusColor.YELLOW
+                    elif diffWeeks >= 2:
+                        result = TrafficLightStatusColor.ORANGE
+                    else:
+                        result = TrafficLightStatusColor.RED
 
-        return success, result
+        return result

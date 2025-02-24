@@ -10,10 +10,10 @@
         "type" : "DocNode",
         "name" : "jstb_2025-01-21-5997937.pdf",
         "plan" : [
-            ["AVAILABLE", "2025-01-17T16:25:16"],
-            ["REVIEWED", "2025-01-18T16:25:16"]
+            ["AVAILABLE", "2025-03-17T16:25:16"],
+            ["REVIEWED", "2025-03-18T16:25:16"]
         ],
-        "status" : [
+        "state" : [
             ["AVAILABLE", "2025-02-18T16:25:16"]
         ]
     }

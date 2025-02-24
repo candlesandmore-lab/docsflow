@@ -13,7 +13,7 @@ def utcTimeStamp(dateTime : Optional[datetime] = None) -> float:
 
 def utcDateTimeFromIsoString(isotime : str) -> datetime :
     #print(isotime)
-    return datetime.fromisoformat(isotime)
+    return  utcDateTime(datetime.fromisoformat(isotime))
 
 def utcDateTimeFromEpochSeconds(seconds : float) -> datetime:
     return datetime.fromtimestamp(seconds, timezone.utc)
