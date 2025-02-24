@@ -34,7 +34,7 @@ pv_Node1 = {
     'type' : 'document',
     'timestamp' : 1222222.3,
     'description': 'PV node',
-    'status': 'complete',
+    'state': 'complete',
     'URL': 'C:\\Users\\Frank\\.gitconfig'
 }
 pv_Node2 = {
@@ -42,7 +42,7 @@ pv_Node2 = {
     'type' : 'context',
     'timestamp': 1202510311.305,
     'description': 'PV node',
-    'status': 'complete',
+    'state': 'complete',
     'URL': 'C:\\Users\\Frank\\somedir'
 }
 pv_Node3 = {
@@ -50,7 +50,7 @@ pv_Node3 = {
     'type' : 'context',
     'timestamp': 12025111.305,
     'description': 'PV node',
-    'status': 'partial',
+    'state': 'partial',
     'URL': 'C:\\Users\\Frank\\someverystrangedir'
 }
 

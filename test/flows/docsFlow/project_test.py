@@ -9,7 +9,7 @@ from python.data.mongoDBHandler import mdbhReturnValue
 from python.elements.baseNode import NodeReturnValue, NodeType
 from python.elements.userItem import UserItem
 from python.flows.docsFlow.projectNode import ProjectNode
-from python.flows.status.baseNodeWithStatus import NodeStatus, StatusColor
+from python.flows.status.baseNodeWithState import NodeState
 from test.data.mongodb_test import PV_MongoHelper
 
 class PV_ProjectHelper():
@@ -49,19 +49,19 @@ class TestProjects(unittest.TestCase):
         projectNode = projectHelper.getProjectNode()
 
         # default status
-        nRetValue, rolledUpStatus, statusColor = projectNode.rolledUpStatus()
+        nRetValue, rolledUpStatus = projectNode.rolledUpState()
         self.assertEqual(nRetValue, NodeReturnValue.OK)
-        print("*PV* Project node status is [{}][{}].".format(StatusColor(statusColor), rolledUpStatus))
+        print("*PV* Project node status is [{}].".format(rolledUpStatus))
 
         # simulate some clodes items
         childs = len(projectNode.childs)
         for childIdx in range(0, int(childs/2)):
-            projectNode.childs[childIdx].status = NodeStatus.CLOSED
+            projectNode.childs[childIdx].state = NodeState.CLOSED
 
         # any better status now?
-        nRetValue, nextRolledUpStatus, nextStatusColor = projectNode.rolledUpStatus()
+        nRetValue, nextRolledUpStatus = projectNode.rolledUpState()
         self.assertEqual(nRetValue, NodeReturnValue.OK)
-        print("*PV* Project node status is [{}][{}].".format(StatusColor(nextStatusColor), nextRolledUpStatus))
+        print("*PV* Project node status is [{}].".format(nextRolledUpStatus))
 
         self.assertGreater(nextRolledUpStatus, rolledUpStatus)
 

@@ -3,9 +3,9 @@ import json
 from python.data.dataFactory import DataFactory
 from python.elements.baseNode import NodeReturnValue
 from python.flows.docsFlow.docFlowNodeTypes import TaskNodeType
-from python.flows.status.baseNodeWithStatus import BaseNodeWithStatus
+from python.flows.status.baseNodeWithState import BaseNodeWithState
 
-class TaskNode(BaseNodeWithStatus):
+class TaskNode(BaseNodeWithState):
     def __init__(self, name:str, factory : DataFactory):
         super().__init__(
             name=name, 

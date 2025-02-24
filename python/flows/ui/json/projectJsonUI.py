@@ -1,6 +1,5 @@
 
 # #user interface for users that edit json file -> none, just for testing
-import json
 from python.data.docFlowNodeFactory import DocFlowNodeFactory
 from python.elements.baseNode import BaseNode
 from python.elements.streamableItem import StreamableDict

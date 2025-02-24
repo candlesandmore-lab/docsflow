@@ -86,8 +86,8 @@ class MetaReaderJson(StreamableItem):
         if 'plan' in contextMetaDict.keys():
             success, result['plan'] = self.__importMetaStatusList(contextMetaDict['plan'])
         
-        if success and 'status' in contextMetaDict.keys():
-            success, result['status'] = self.__importMetaStatusList(contextMetaDict['status'])
+        if success and 'state' in contextMetaDict.keys():
+            success, result['state'] = self.__importMetaStatusList(contextMetaDict['state'])
 
         fieldExists, metaName = getFieldSave(contextMetaDict, 'name', None)
         updateFieldIfValueNotNone(result, 'name', metaName)
