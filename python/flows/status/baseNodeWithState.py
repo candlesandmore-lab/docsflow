@@ -39,11 +39,11 @@ class BaseNodeWithState(BaseNode):
         self.packIgnoreProperties.append('statusProperties')
 
 
-    def getStatus(self, key, default) -> Any:
+    def getStatus(self, key, default) -> tuple[Any, str]:
         return getFieldSave(self.statusProperties, key, default)
     
-    def setStatus(self, key, value) -> None:
-        self.statusProperties[key] = value
+    def setStatus(self, key, value, reasoning : str) -> None:
+        self.statusProperties[key] = (value, reasoning)
 
     def fromJson(
             self,

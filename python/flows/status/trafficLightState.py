@@ -12,6 +12,7 @@ class TrafficLightStatusColor(str, Enum):
     ORANGE = "ORANGE"
     YELLOW = "YELLOW"
     GREEN = "GREEN"
+    UNDEF = "UNDEF"
 
 class TrafficLightState():
     def __init__(self):
@@ -20,6 +21,7 @@ class TrafficLightState():
     
     def updateStatus(self, node : BaseNodeWithState, path : str) -> bool:
         success = True
+        reasoning = "UNDEF"
         
         for child in node.childs:
             childPath = str.join("/", [path, child.name])
@@ -31,7 +33,9 @@ class TrafficLightState():
                 self.logger.error("Found node [{}] in tree which is not a status node, abort.".format(
                     childPath
                 ))
+                reasoning = "Node is not a BaseNodeWithStatus"
                 success = False
+
                 break
 
         if success:
@@ -47,26 +51,28 @@ class TrafficLightState():
 
             if node.state == NodeState.CLOSED:
                 status = TrafficLightStatusColor.GREEN
+                reasoning = "All good, done!"
             elif node.state >= NodeState.REVIEWED:
                 defaultStatus = TrafficLightStatusColor.YELLOW
                 if not planExists:
                     status = defaultStatus
+                    reasoning = "Reviewed and no plan date for CLOSED"
                 else:
-                    status = self.calculateStatus(node, childMetaPlan, 'REVIEWED', ['CLOSED'], defaultStatus)
+                    status, reasoning = self.calculateStatus(node, childMetaPlan, 'REVIEWED', ['CLOSED'], defaultStatus)
             elif node.state >= NodeState.AVAILABLE:
                 defaultStatus = TrafficLightStatusColor.ORANGE
                 if not planExists:
                     status = defaultStatus
                 else:
-                    status = self.calculateStatus(node, childMetaPlan, 'AVAILABLE', ['REVIEWED', 'CLOSED'], defaultStatus)
+                    status, reasoning = self.calculateStatus(node, childMetaPlan, 'AVAILABLE', ['REVIEWED', 'CLOSED'], defaultStatus)
             elif node.state >= NodeState.UNDEF:
                 defaultStatus = TrafficLightStatusColor.RED
                 if not planExists:
                     status = defaultStatus
                 else:
-                    status = self.calculateStatus(node, childMetaPlan, 'UNDEF', ['AVAILABLE', 'REVIEWED', 'CLOSED'], defaultStatus)
+                    status, reasoning = self.calculateStatus(node, childMetaPlan, 'UNDEF', ['AVAILABLE', 'REVIEWED', 'CLOSED'], defaultStatus)
 
-        node.setStatus(self.id, status)
+        node.setStatus(self.id, status, reasoning)
         return success
 
         
@@ -76,9 +82,10 @@ class TrafficLightState():
             childMetaPlan, 
             state : str,
             nextStates : list, 
-            defaultStatus : TrafficLightStatusColor) -> TrafficLightStatusColor:
+            defaultStatus : TrafficLightStatusColor) -> tuple[TrafficLightStatusColor, str]:
         
         result = TrafficLightStatusColor.RED
+        reasoning = "UNDEF"
         
         # check for this state plan
         now = utcDateTime()
@@ -86,8 +93,16 @@ class TrafficLightState():
         if planExists:
             if now <= planItem['targetDate'].when:
                 result = TrafficLightStatusColor.GREEN
+                reasoning = "Reached [{}] in time (at or before milestone time) [{}]".format(
+                    state,
+                    planItem['targetDate'].when
+                )
             else:
                 result = TrafficLightStatusColor.RED  # post milestone default
+                reasoning = "Still in [{}] in after milestone time [{}]".format(
+                    state,
+                    planItem['targetDate'].when
+                )
 
                 # no milestone for this state or we passed it, check next states milestones
                 for nextState in nextStates:
@@ -110,4 +125,17 @@ class TrafficLightState():
                     else:
                         result = TrafficLightStatusColor.RED
 
-        return result
+                    if diffWeeks > 0:
+                        reasoning = "Next state [{}] is about [{}] weeks ahead [{}]".format(
+                            nextState,
+                            int(diffWeeks),
+                            planItem['targetDate'].when
+                        )                        
+                    else:
+                        reasoning = "Next state [{}] should have been reached about [{}] weeks ago [{}]".format(
+                            nextState,
+                            abs(int(diffWeeks)),
+                            planItem['targetDate'].when
+                        )                        
+
+        return result, reasoning

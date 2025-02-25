@@ -81,26 +81,29 @@ class TestJsonMeta(unittest.TestCase):
 
         return ui.project
 
-    def test_importProjectWithMetaDataTrafficLight(self):
+    def test_importProjectWithMetaDataTrafficLight(self) -> BaseNode:
         projectNode = self.test_importProjectWithMetaData()
-        # map meta data to status
-        self.assertTrue(isinstance(projectNode, BaseNodeWithState))
+        if isinstance(projectNode, BaseNodeWithState):
+            # map meta data to status
+            self.assertTrue(isinstance(projectNode, BaseNodeWithState))
 
-        success, overallState = projectNode.updateStateWithMetaData(
-            path=""
-        )
+            success, overallState = projectNode.updateStateWithMetaData(
+                path=""
+            )
 
-        self.assertTrue(success)
-        print("*PV* : top state is [{}].".format(overallState))
+            self.assertTrue(success)
+            print("*PV* : top state is [{}].".format(overallState))
 
-        # calculate traffic light status
-        trafficLightStateWorker = TrafficLightState()
-        trafficLightStateWorker.updateStatus(node=projectNode, path="")
-        print("*PV* : top status is [{}].".format(
-            projectNode.getStatus(
-                key=trafficLightStateWorker.id,
-                default=TrafficLightStatusColor.RED
-        )))
+            # calculate traffic light status
+            trafficLightStateWorker = TrafficLightState()
+            trafficLightStateWorker.updateStatus(node=projectNode, path="")
+            print("*PV* : top status is [{}].".format(
+                projectNode.getStatus(
+                    key=trafficLightStateWorker.id,
+                    default=TrafficLightStatusColor.RED
+            )))
+
+        return projectNode
     
     def test_storeAndReadProjectWithMetaData(self):
         projectNode = self.test_importProjectWithMetaData()
@@ -108,6 +111,19 @@ class TestJsonMeta(unittest.TestCase):
         treeHelper = PV_TreeHelper()
         node2 = treeHelper.getProjectDocHierNode()
 
+        success, overallState = projectNode.updateStateWithMetaData(
+            path=""
+        )
+        
+        # calculate state and traffic light status
+        trafficLightStateWorker = TrafficLightState()
+        trafficLightStateWorker.updateStatus(node=projectNode, path="")
+        print("*PV* : top status is [{}].".format(
+            projectNode.getStatus(
+                key=trafficLightStateWorker.id,
+                default=TrafficLightStatusColor.RED
+        )))
+        
         baseFactoryTest = TestFactory()
         baseFactoryTest.createInsertGetUpdate2Nodes(projectNode, node2)
 
