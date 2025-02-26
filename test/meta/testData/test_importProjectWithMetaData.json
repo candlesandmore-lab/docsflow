@@ -1,18 +1,18 @@
 {
     "name": "PV_projectForConstructionTest",
-    "uuid": "a5039bda-49f6-4f0b-b498-eee0b2d02f28",
+    "uuid": "57753948-23c5-4650-963c-6ca9c2ff6cf3",
     "childs": [
         {
             "name": "sub1",
-            "uuid": "4b8d2ada-097b-48ec-949e-a0f51d6171c2",
+            "uuid": "3cd8188b-c0c7-4b49-bae0-ded2d739caf0",
             "childs": [
                 {
                     "name": "Steuerbescheinigung.pdf",
-                    "uuid": "7eff5fbc-9ddc-4cd7-8bec-a84a24c8caeb",
+                    "uuid": "8995d4c8-4bf5-4cc7-82f9-41f0f170e155",
                     "childs": [],
                     "updates": [
                         {
-                            "when": "2025-02-26T16:45:01.936931+00:00",
+                            "when": "2025-02-26T17:20:56.511901+00:00",
                             "who": {
                                 "name": "FrankA",
                                 "role": "Steuerpflichtiger"
@@ -60,11 +60,11 @@
                 },
                 {
                     "name": "sub11",
-                    "uuid": "7d1c441f-915a-484f-a7cd-e1d9e6242cd7",
+                    "uuid": "4d433d74-f598-45a9-b12e-5b176e9b92a0",
                     "childs": [],
                     "updates": [
                         {
-                            "when": "2025-02-26T16:45:01.936931+00:00",
+                            "when": "2025-02-26T17:20:56.510865+00:00",
                             "who": {
                                 "name": "FrankA",
                                 "role": "Steuerpflichtiger"
@@ -107,7 +107,7 @@
             ],
             "updates": [
                 {
-                    "when": "2025-02-26T16:45:01.931976+00:00",
+                    "when": "2025-02-26T17:20:56.505844+00:00",
                     "who": {
                         "name": "PV_testcase__project_test",
                         "role": "TESTER"
@@ -118,7 +118,7 @@
                     "kind": 1
                 },
                 {
-                    "when": "2025-02-26T16:45:01.931976+00:00",
+                    "when": "2025-02-26T17:20:56.505844+00:00",
                     "who": {
                         "name": "PV_testcase__project_test",
                         "role": "TESTER"
@@ -129,7 +129,7 @@
                     "kind": 1
                 },
                 {
-                    "when": "2025-02-26T16:45:01.937927+00:00",
+                    "when": "2025-02-26T17:20:56.511901+00:00",
                     "who": {
                         "name": "FrankA",
                         "role": "Steuerpflichtiger"
@@ -163,8 +163,8 @@
             },
             "state": -1.0,
             "childStateWeights": {
-                "7eff5fbc-9ddc-4cd7-8bec-a84a24c8caeb": 13,
-                "7d1c441f-915a-484f-a7cd-e1d9e6242cd7": 13
+                "8995d4c8-4bf5-4cc7-82f9-41f0f170e155": 13,
+                "4d433d74-f598-45a9-b12e-5b176e9b92a0": 13
             },
             "contextType": {
                 "type": "UNDEF",
@@ -174,15 +174,15 @@
         },
         {
             "name": "sub2",
-            "uuid": "e94554ac-0b11-4d4b-826b-27d10136901e",
+            "uuid": "383a5a52-8856-4588-afc9-b97e8d607dee",
             "childs": [
                 {
                     "name": "jstb_2025-01-21-5997937.pdf",
-                    "uuid": "7e169283-cd10-4f6d-b38d-d16a0286f684",
+                    "uuid": "348dfc30-cb0b-45f1-8d81-7cffb7323475",
                     "childs": [],
                     "updates": [
                         {
-                            "when": "2025-02-26T16:45:01.937927+00:00",
+                            "when": "2025-02-26T17:20:56.511901+00:00",
                             "who": {
                                 "name": "FrankA",
                                 "role": "Steuerpflichtiger"
@@ -231,7 +231,7 @@
             ],
             "updates": [
                 {
-                    "when": "2025-02-26T16:45:01.933981+00:00",
+                    "when": "2025-02-26T17:20:56.507881+00:00",
                     "who": {
                         "name": "PV_testcase__project_test",
                         "role": "TESTER"
@@ -242,7 +242,7 @@
                     "kind": 1
                 },
                 {
-                    "when": "2025-02-26T16:45:01.937927+00:00",
+                    "when": "2025-02-26T17:20:56.512896+00:00",
                     "who": {
                         "name": "FrankA",
                         "role": "Steuerpflichtiger"
@@ -282,7 +282,7 @@
             },
             "state": -1.0,
             "childStateWeights": {
-                "7e169283-cd10-4f6d-b38d-d16a0286f684": 13
+                "348dfc30-cb0b-45f1-8d81-7cffb7323475": 13
             },
             "contextType": {
                 "type": "UNDEF",
@@ -292,14 +292,14 @@
         },
         {
             "name": "test_importProjectWithMetaData.json",
-            "uuid": "3493b017-5807-4878-b1d4-7648002d3eab",
+            "uuid": "1b2c843f-ccbe-41d7-a737-1fa399234d8a",
             "childs": [],
             "updates": [],
             "properties": {
                 "docPath": "C:\\Users\\Frank\\SynologyDrive\\Drive\\LaptopOnly\\github\\docsflow\\test\\meta\\testData\\test_importProjectWithMetaData.json",
                 "size": 16759,
                 "owner": 0,
-                "mupdateTime": "2025-02-26T16:43:10.377220+00:00",
+                "mupdateTime": "2025-02-26T17:18:38.893650+00:00",
                 "createTime": "2025-02-18T16:33:01.680305+00:00"
             },
             "state": -1.0,
@@ -313,7 +313,7 @@
     ],
     "updates": [
         {
-            "when": "2025-02-26T16:45:01.930976+00:00",
+            "when": "2025-02-26T17:20:56.504848+00:00",
             "who": {
                 "name": "PV_testcase__project_test",
                 "role": "TESTER"
@@ -324,7 +324,7 @@
             "kind": 1
         },
         {
-            "when": "2025-02-26T16:45:01.932974+00:00",
+            "when": "2025-02-26T17:20:56.506842+00:00",
             "who": {
                 "name": "PV_testcase__project_test",
                 "role": "TESTER"
@@ -335,7 +335,7 @@
             "kind": 1
         },
         {
-            "when": "2025-02-26T16:45:01.933981+00:00",
+            "when": "2025-02-26T17:20:56.507881+00:00",
             "who": {
                 "name": "PV_testcase__project_test",
                 "role": "TESTER"
@@ -346,7 +346,7 @@
             "kind": 1
         },
         {
-            "when": "2025-02-26T16:45:01.937927+00:00",
+            "when": "2025-02-26T17:20:56.512896+00:00",
             "who": {
                 "name": "FrankA",
                 "role": "Steuerpflichtiger"
@@ -363,9 +363,9 @@
     },
     "state": -1.0,
     "childStateWeights": {
-        "4b8d2ada-097b-48ec-949e-a0f51d6171c2": 13,
-        "e94554ac-0b11-4d4b-826b-27d10136901e": 13,
-        "3493b017-5807-4878-b1d4-7648002d3eab": 13
+        "3cd8188b-c0c7-4b49-bae0-ded2d739caf0": 13,
+        "383a5a52-8856-4588-afc9-b97e8d607dee": 13,
+        "1b2c843f-ccbe-41d7-a737-1fa399234d8a": 13
     },
     "contextType": {
         "type": "UNDEF",
