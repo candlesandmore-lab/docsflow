@@ -4,6 +4,7 @@ import unittest
 # Python tkinter hello world program 
 # build upon: https://pythonassets.com/posts/treeview-in-tk-tkinter/
 #  https://www.pythontutorial.net/tkinter/tkinter-mvc/
+#  Example MVC: https://nazmul-ahsan.medium.com/how-to-organize-multi-frame-tkinter-application-with-mvc-pattern-79247efbb02b
 
 from tkinter import END, Tk
 from tkinter import ttk

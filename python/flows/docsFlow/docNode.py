@@ -15,8 +15,6 @@ class DocNode(BaseNodeWithState):
             factory=factory)
 
         self.docType = DocNodeType()
-
-        # TODO: set default values for properties, such that stepwise constructed nodes have all props
         
     def fromJson(
             self,

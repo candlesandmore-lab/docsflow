@@ -115,7 +115,7 @@ class TrafficLightState():
                     print((planItem['targetDate'].when - now).total_seconds())
                     diffWeeks = (planItem['targetDate'].when - now).total_seconds() / (60 * 60 * 24 * 7)
                     
-                    # TODO: find user defined buffer times
+                    # TODO: define user defined buffer times
                     if diffWeeks >= 8:
                         result = TrafficLightStatusColor.GREEN
                     elif diffWeeks >= 4:

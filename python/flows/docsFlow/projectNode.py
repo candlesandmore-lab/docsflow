@@ -11,8 +11,6 @@ class ProjectNode(ContextNode):
             factory=factory)
 
         self.nodeType = NodeType.PROJECT
-
-        # TODO: set default values for properties, such that stepwise constructed nodes have all props
         
     def isValid(self):
         return super().isValid()
