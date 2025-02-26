@@ -24,7 +24,8 @@ class ProjectTreeController():
         print("*DEB* : selected [{}]".format(frame_id[0]))
 
         # TODO: replace all data
-        self.view.frames['details'].nodeData.name = frame_id[0]
+        newFocusNode = self.model.projectModel.getNodeByUUID(frame_id[0])
+        self.view.frames['details'].nodeData = newFocusNode
         self.view.frames['details'].refresh()
 
     # TODO: bind to GUI operation

@@ -4,6 +4,7 @@ import tkinter as tk
 from tkinter import ttk
 from typing import Any
 
+from python.flows.docsFlow.contextNode import ContextNode
 from python.flows.status.baseNodeWithState import BaseNodeWithState
 from python.flows.status.trafficLightState import TrafficLightStatusColor
 
@@ -51,6 +52,26 @@ class ProjectTreeView(ttk.Frame):
 
 
     def addNodeToTreeview(self, treeview : ttk.Treeview, parent : str, node : Any) -> ttk.Treeview:
+        if  isinstance(node, ContextNode):
+            thisTreeItem = treeview.insert(
+                parent=parent,
+                index=tk.END,
+                text=node.name,
+                iid=node.uuid,
+                values=(
+                    "{}".format(node.state),
+                    "{}".format(node.getStatus(
+                        key="TrafficLight", 
+                        default=TrafficLightStatusColor.UNDEF
+                )))
+            )
+            for child in node.childs:
+                treeview = self.addNodeToTreeview(
+                    treeview=treeview,
+                    parent=thisTreeItem,
+                    node = child
+                )                
+        '''
         if not isinstance(node, BaseNodeWithState):
             thisTreeItem = treeview.insert(
                 parent=parent,
@@ -92,5 +113,5 @@ class ProjectTreeView(ttk.Frame):
                         parent=thisTreeItem,
                         node = child
                     )
-
+        '''
         return treeview
