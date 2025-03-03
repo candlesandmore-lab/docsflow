@@ -13,7 +13,6 @@ class ProjectTreeView(ttk.Frame):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
-        self.projectData = None
 
         self.treeview = ttk.Treeview(self, columns=("state", "status"))
         self.treeview.heading("#0", text="elment")
@@ -23,7 +22,9 @@ class ProjectTreeView(ttk.Frame):
     # TODO: parameterize tree wiht
     #  (a) : depth (0, ...)
     #  (b) : nodes (ALL, CONTEXT, DOC)
-    def refresh(self) -> None:
+    def refresh(self, parentContext : BaseNodeWithState) -> None:
+        self.projectData = parentContext
+
         # Refresh tree
         self.treeview.delete(*self.treeview.get_children())
 

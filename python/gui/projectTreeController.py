@@ -1,5 +1,4 @@
 
-from python.elements.baseNode import BaseNode
 from python.gui.model import Model
 from python.gui.view import View
 
@@ -22,7 +21,6 @@ class ProjectTreeController():
 
     # TODO: bind to GUI operation
     def setProjectNode(self, model : Model) -> None:
-        self.view.frames['tree'].projectData = self.model.projectModel.projectNode
-        self.view.frames['tree'].refresh()
+        self.view.frames['tree'].refresh(self.model.projectModel.projectNode)
 
 

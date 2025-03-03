@@ -42,3 +42,4 @@ class Controller:
 
     def start(self) -> None:
         self.view.startMainloop()
+

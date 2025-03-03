@@ -18,12 +18,14 @@ class NodeViewController():
                 #button.config(command=lambda t=button['text']: self.contextSelected(t))
                 button.config(command=lambda t=button._name: self.contextSelected(t))
 
+    # selection (button) of child context
     def contextSelected(self, contextName):
         print("*DEB* : selected [{}]".format(contextName))
         newDetailedFocusNode = self.model.projectModel.getNodeByUUID(contextName)
-        self.view.frames['details'].contextDetails.parentContext = newDetailedFocusNode
-        self.view.frames['details'].refreshDetails()
 
+        self.view.frames['details'].refreshDetails(newDetailedFocusNode)
+
+    # selection in main tree -> change ALL
     def parentChanged(self, newFocusNode):
         self.view.frames['details'].nodeData = newFocusNode
         self.view.frames['details'].refreshTop()
